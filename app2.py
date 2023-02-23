@@ -113,8 +113,10 @@ dir(rett)
 result = [Image.fromarray(rett['r0'][0])]
 result += [Image.fromarray(rett['r0'][1])]
 
-result += [returnImage(rett['r1']['x_inter'][1])]
-result += [returnImage(rett['r1']['pred_x0'][1])]
+for i in rett['r1']['x_inter']:
+    result += [returnImage(i)]
+for i in rett['r1']['pred_x0']:
+    result += [returnImage(i)]
 
 for i in rett['r1']['x_inter2']:
     result += [returnImage(i)]
