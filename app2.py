@@ -74,7 +74,7 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"vvv___"+str(m_num)+"__"+randStr()
+    fn=m_dir+"i000___"+str(m_num)+"__"+randStr()
     print(fn)
     grid.save(fn+".jpg","jpeg") 
     imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
@@ -98,21 +98,49 @@ def returnImage(tense):
 def getProcess():
     img=Image.open("poose01.png")
     img=np.asanyarray(img)
-    pt01="professional photograph,toned physique,(highly detailed:1.2), Award-winning photograph,detailed face, detailed eyes, cinematic lighting,Intricately detailed Full body"
-    pt01="professional photograph"
+    #bloom, god rays, hard shadows, studio lighting, soft lighting, diffused lighting, rim lighting, volumetric lighting, specular lighting, cinematic lighting, luminescence, translucency, subsurface scattering, global illumination, indirect light, radiant light rays, bioluminescent details, ektachrome, glowing, shimmering light, halo, iridescent, backlighting, caustics
+    key01=["professional lighting","cinematic lighting","bloom","god rays","soft lighting"]
+    key02=["seductive look","[[[smiling]]]","smile","angry","sad"]
+    key03=["kodak portra 400","Olympus","sony","Canon","nikon","samsung"]
+    key04=["35mm lens","8mm lens","100mm macro lens","leica SL lens","8mm film grain"]
+    key05=["toned body","sexy body","healthy body"]
+    key06=["Award-winning photograph","professional photograph"]
+    key07=["HDR","4K resolution","8k resolution"]
+    key08=["HDR","4K resolution","8k resolution"]
+    key09=["strawberry hair","beach hair","blonde hair","straight hair"]
+    key10=["red","blue","green","black","gold","brown","sky"]
+    key11=["Caucasian","asian","hispanic","idian"]
+    key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
+    pt01 = "sfw,(detailed skin),"
+    pt01 +=random.choice(key01)+","
+    pt01 +=random.choice(key02)+","
+    pt01 += random.choice(key03)+","
+    pt01 +=random.choice(key04)+","
+    pt01+=random.choice(key05)+","
+    pt01+=random.choice(key06)+","
+    pt01+=random.choice(key07)+","
+    pt01+=random.choice(key08)+","
+    pt01+=random.choice(key09)+","
+    pt01+=random.choice(key10)+","
+    pt01+=random.choice(key11)+","
+    pt01+=random.choice(key12)
+    
+
+    nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
+    pt01 += ","+randStr()
+    
     rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
-                   n_prompt="",
+                   n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
                    image_resolution=512,
                    detect_resolution=512,
-                   scale=9,
+                   scale=7.5,
                    seed=-1,
                    eta=0.0,
-                   temp=0.0
-    )
+                   temp=0.0)
     return rett
 
 def saveArrImg(rett):
