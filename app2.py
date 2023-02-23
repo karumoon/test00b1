@@ -95,10 +95,10 @@ print(len(result))
 print(len(result[0]))
 print(len(result[0][0]))
 
-result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
-result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
+#result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
+#result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
 
-result = Image.fromarray(result)
+result = Image.fromarray(result[1])
 print(result)
 print(result.size)
 
