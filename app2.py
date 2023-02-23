@@ -92,7 +92,7 @@ def image_grid(imgs, rows=2, cols=3):
     return grid     
 
 
-img_grid(result)
+image_grid(result)
 
 
     
