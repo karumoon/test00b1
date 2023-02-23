@@ -110,7 +110,8 @@ def getProcess():
                    detect_resolution=512,
                    scale=9,
                    seed=-1,
-                   eta=0.0
+                   eta=0.0,
+                   temp=0.0
     )
     return rett
 
