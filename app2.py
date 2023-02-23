@@ -74,7 +74,7 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"ttt___"+str(m_num)+"__"+randStr()
+    fn=m_dir+"vvv___"+str(m_num)+"__"+randStr()
     print(fn)
     grid.save(fn+".jpg","jpeg") 
     imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
@@ -106,8 +106,8 @@ def getProcess():
                    n_prompt="",
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=(768,768),
-                   detect_resolution=(768,768),
+                   image_resolution=512,
+                   detect_resolution=512,
                    scale=9,
                    seed=-1,
                    eta=0.0
