@@ -45,13 +45,13 @@ model = Model()
  def process_pose(self, input_image, prompt, a_prompt, n_prompt,
                      num_samples, image_resolution, detect_resolution,
                      ddim_steps, scale, seed, eta):
-"""
+
 
 ips = [
             input_image, prompt, a_prompt, n_prompt, num_samples,
             image_resolution, detect_resolution, ddim_steps, scale, seed, eta
         ]
-
+"""
 img=image.open("poose01.png")
 result=model.process_pose(input_image=img,
                    prompt="focus ass",
