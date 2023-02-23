@@ -101,7 +101,11 @@ def changToimgArr(tense):
   arr = [x_samples[i] for i in range(num_samples)]
   return arr
 
-
+def returnImage(tense):
+  rr00 = tense
+  rr00 = changToimgArr(rr00)
+  rr00 = Image.fromarray(rr00[0])
+  return rr00
 
 
 dir(rett)
@@ -109,17 +113,18 @@ dir(rett)
 result = [Image.fromarray(rett['r0'][0])]
 result += [Image.fromarray(rett['r0'][1])]
 
-rr00=rett['r1']['x_inter'][1]
-rr00=Image.fromarray(changToimgArr(rr00))
-result += [rr00]
-#result += [Image.fromarray(rett['r1']['pred_x0'][1])]
-"""
+result += [returnImage(rett['r1']['x_inter'][1])]
+result += [returnImage(rett['r1']['pred_x0'][1])]
+
 for i in rett['r1']['x_inter2']:
-    result += [Image.fromarray(i)]
+    result += [returnImage(i)]
 for i in rett['r1']['pred_x02']:
-    result += [Image.fromarray(i)]
-"""    
+    result += [returnImage(i)]
+    
 #result.append(Image.fromarray(result.r1['pred_x02'][1]))
 print("r size ",len(result))
 image_grid(result,len(result),1)
 
+
+    
+    
