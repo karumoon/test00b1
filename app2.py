@@ -52,7 +52,7 @@ ips = [
             image_resolution, detect_resolution, ddim_steps, scale, seed, eta
         ]
 """
-img=image.open("poose01.png")
+img=Image.open("poose01.png")
 result=model.process_pose(input_image=img,
                    prompt="focus ass",
                    a_prompt="girl",
