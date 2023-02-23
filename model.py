@@ -507,6 +507,13 @@ class Model:
     def process_pose(self, input_image, prompt, a_prompt, n_prompt,
                      num_samples, image_resolution, detect_resolution,
                      ddim_steps, scale, seed, eta):
+        print( input_image, prompt, a_prompt, n_prompt,
+                     num_samples, image_resolution, detect_resolution,
+                     ddim_steps, scale, seed, eta
+        )
+        print("image_resolution",image_resolution)
+        print("detect_resolution",detect_resolution)
+        
         self.load_weight('pose')
 
         input_image = HWC3(input_image)
