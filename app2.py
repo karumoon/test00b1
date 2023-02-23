@@ -34,6 +34,35 @@ ALLOW_CHANGING_BASE_MODEL = 'hysts/ControlNet-with-other-models'
 from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
                    DEFAULT_BASE_MODEL_URL, Model)
 
+global model
+
 model = Model()
 
+"""
+ def process_pose(self, input_image, prompt, a_prompt, n_prompt,
+                     num_samples, image_resolution, detect_resolution,
+                     ddim_steps, scale, seed, eta):
+"""
 
+ips = [
+            input_image, prompt, a_prompt, n_prompt, num_samples,
+            image_resolution, detect_resolution, ddim_steps, scale, seed, eta
+        ]
+
+img=False
+model.process_pose(input_image=img,
+                   prompt="focus ass",
+                   a_prompt="girl",
+                   n_prompt="bad anatomy",
+                   num_samples=1,
+                   ddim_steps=1,
+                   image_resolution=512,
+                   detect_resolution=512,
+                   scale=9,
+                   seed=100,
+                   eta=0.0
+)
+
+
+
+    
