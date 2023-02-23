@@ -65,7 +65,7 @@ def randStr():
 
 global m_num
 m_num=0
-def image_grid(imgs, rows=2, cols=3): 
+def image_grid(imgs, rows=1, cols=1): 
     global m_num
     m_num += 1                                                                                                                                                                                                        
     w, h = imgs[0].size                                                                                                                                                                                                                       
@@ -75,7 +75,8 @@ def image_grid(imgs, rows=2, cols=3):
         grid.paste(img, box=(i%cols*w, i//cols*h))  
     fn=m_dir+"ccc__"+str(m_num)+"__"+randStr()+".jpg"
     print(fn)
-    grid.save(fn,"jpeg")                                                                                                                                                                                          
+    grid.save(fn,"jpeg")
+    imgs[1].save(fn+"_a","png")
     return grid     
 
 def changToimgArr(tense):
