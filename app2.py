@@ -8,6 +8,7 @@ import subprocess
 from PIL import Image                                                                                                                                                                                                                         
 import random
 import numpy as np
+import einops
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -86,30 +87,39 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"bbb__"+str(m_num)+"__"+randStr()+".jpg"
+    fn=m_dir+"aaa__"+str(m_num)+"__"+randStr()+".jpg"
     print(fn)
     grid.save(fn,"jpeg")                                                                                                                                                                                          
     return grid     
 
+def changToimgArr(tense):
+  num_samples = 1
+  x_samples = model.decode_first_stage(tense)
+  x_samples = (
+        einops.rearrange(x_samples, 'b c h w -> b h w c') * 127.5 +
+        127.5).cpu().numpy().clip(0, 255).astype(np.uint8)
+  arr = [x_samples[i] for i in range(num_samples)]
+  return arr
 
-#result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
-#result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
+
+
 
 dir(rett)
 
 result = [Image.fromarray(rett['r0'][0])]
 result += [Image.fromarray(rett['r0'][1])]
-result += [Image.fromarray(rett['r1']['x_inter'][1])]
-result += [Image.fromarray(rett['r1']['pred_x0'][1])]
 
+rr00=rett['r1']['x_inter'][1]
+rr00=Image.fromarray(changToimgArr(rr00))
+result += [rr00]
+#result += [Image.fromarray(rett['r1']['pred_x0'][1])]
+"""
 for i in rett['r1']['x_inter2']:
     result += [Image.fromarray(i)]
 for i in rett['r1']['pred_x02']:
     result += [Image.fromarray(i)]
-    
+"""    
 #result.append(Image.fromarray(result.r1['pred_x02'][1]))
 print("r size ",len(result))
-image_grid(result,1,len(result))
+image_grid(result,len(result),1)
 
-
-    
