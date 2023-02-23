@@ -31,6 +31,9 @@ for name in names:
 MAX_IMAGES = 4
 ALLOW_CHANGING_BASE_MODEL = 'hysts/ControlNet-with-other-models'
 
+from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
+                   DEFAULT_BASE_MODEL_URL, Model)
+
 model = Model()
 
 
