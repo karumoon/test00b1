@@ -7,7 +7,7 @@ import subprocess
 
 from PIL import Image                                                                                                                                                                                                                         
 import random
-from numpy as np
+import numpy as np
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
