@@ -54,7 +54,7 @@ ips = [
 """
 img=Image.open("poose01.png")
 img=np.asanyarray(img)
-result=model.process_pose(input_image=img,
+result=model.process_pose_user(input_image=img,
                    prompt="focus ass",
                    a_prompt="girl",
                    n_prompt="bad anatomy",
@@ -63,7 +63,7 @@ result=model.process_pose(input_image=img,
                    image_resolution=512,
                    detect_resolution=512,
                    scale=9,
-                   seed=100,
+                   seed=-1,
                    eta=0.0
 )
 
@@ -86,24 +86,26 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"abcd__"+str(m_num)+"__"+randStr()+".jpg"
+    fn=m_dir+"bbb__"+str(m_num)+"__"+randStr()+".jpg"
     print(fn)
     grid.save(fn,"jpeg")                                                                                                                                                                                          
     return grid     
 
-print(len(result))
-print(len(result[0]))
-print(len(result[0][0]))
 
 #result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
 #result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
 
-result = Image.fromarray(result[1])
-print(result)
-print(result.size)
-
-
-image_grid([result])
-
+result = [Image.fromarray(result.r0[0])]
+result.append(Image.fromarray(result.r0[1]))
+result.append(Image.fromarray(result.r1['x_inter'][1]))
+result.append(Image.fromarray(result.r1['pred_x0'][1]))
+for i in result.r1['x_inter2']:
+    result.append(Image.fromarray(i))
+for i in result.r1['pred_x02']:
+    result.append(Image.fromarray(i))
+    
+#result.append(Image.fromarray(result.r1['pred_x02'][1]))
+print("r size ",len(result))
+image_grid(result,1,len(result))
 
     
