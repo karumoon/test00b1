@@ -515,6 +515,7 @@ class Model:
         detected_map = HWC3(detected_map)
         img = resize_image(input_image, image_resolution)
         H, W, C = img.shape
+        print(img)
         print(img.shape)
         print(H,W,C)
         detected_map = cv2.resize(detected_map, (W, H),
@@ -550,7 +551,10 @@ class Model:
         if config.save_memory:
             self.model.low_vram_shift(is_diffusing=True)
         
-        print(ddim_steps,num_samples,shape,cond,eta,scale,un_cond)
+        print("ddim_steps",ddim_steps,"num_samples",num_samples,"shape",shape
+        print("cond","cond")
+        print("eta",eta,"scale",scale)
+        print("un_cond","un_cond")
         
         samples, intermediates = self.ddim_sampler.sample(
             ddim_steps,
