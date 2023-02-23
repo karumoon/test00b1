@@ -577,7 +577,84 @@ class Model:
 
         results = [x_samples[i] for i in range(num_samples)]
         return [detected_map] + results
+    
+    @torch.inference_mode()
+    def process_pose_user(self, input_image, prompt, a_prompt, n_prompt,
+                     num_samples, image_resolution, detect_resolution,
+                     ddim_steps, scale, seed, eta):
+        
+        
+        self.load_weight('pose')
 
+        input_image = HWC3(input_image)
+        detected_map, _ = apply_openpose(
+            resize_image(input_image, detect_resolution))
+        detected_map = HWC3(detected_map)
+        img = resize_image(input_image, image_resolution)
+        H, W, C = img.shape
+        
+        detected_map = cv2.resize(detected_map, (W, H),
+                                  interpolation=cv2.INTER_NEAREST)
+
+        control = torch.from_numpy(detected_map.copy()).float().cuda() / 255.0
+        control = torch.stack([control for _ in range(num_samples)], dim=0)
+        control = einops.rearrange(control, 'b h w c -> b c h w').clone()
+
+        if seed == -1:
+            seed = random.randint(0, 65535)
+        seed_everything(seed)
+
+        if config.save_memory:
+            self.model.low_vram_shift(is_diffusing=False)
+
+        cond = {
+            'c_concat': [control],
+            'c_crossattn': [
+                self.model.get_learned_conditioning(
+                    [prompt + ', ' + a_prompt] * num_samples)
+            ]
+        }
+        un_cond = {
+            'c_concat': [control],
+            'c_crossattn':
+            [self.model.get_learned_conditioning([n_prompt] * num_samples)]
+        }
+        shape = (4, H // 8, W // 8)
+        
+        
+        if config.save_memory:
+            self.model.low_vram_shift(is_diffusing=True)
+        
+        print("ddim_steps",ddim_steps,"num_samples",num_samples,"shape",shape)
+        print("cond","cond")
+        print("eta",eta,"scale",scale)
+        print("un_cond","un_cond")
+        
+        samples, intermediates = self.ddim_sampler.sample(
+            ddim_steps,
+            num_samples,
+            shape,
+            cond,
+            verbose=False,
+            eta=eta,
+            unconditional_guidance_scale=scale,
+            unconditional_conditioning=un_cond)
+        
+        
+        if config.save_memory:
+            self.model.low_vram_shift(is_diffusing=False)
+
+        x_samples = self.model.decode_first_stage(samples)
+        x_samples = (
+            einops.rearrange(x_samples, 'b c h w -> b h w c') * 127.5 +
+            127.5).cpu().numpy().clip(0, 255).astype(np.uint8)
+
+        results = [x_samples[i] for i in range(num_samples)]
+        
+        ret={r0:[detected_map,result],r1:intermediates}
+        return ret
+
+    
     @torch.inference_mode()
     def process_seg(self, input_image, prompt, a_prompt, n_prompt, num_samples,
                     image_resolution, detect_resolution, ddim_steps, scale,
