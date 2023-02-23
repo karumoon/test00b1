@@ -54,7 +54,7 @@ ips = [
 """
 img=Image.open("poose01.png")
 img=np.asanyarray(img)
-result=model.process_pose_user(input_image=img,
+rett=model.process_pose_user(input_image=img,
                    prompt="focus ass",
                    a_prompt="girl",
                    n_prompt="bad anatomy",
@@ -95,17 +95,17 @@ def image_grid(imgs, rows=2, cols=3):
 #result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
 #result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
 
-dir(result)
+dir(rett)
 
-result = [Image.fromarray(result['r0'][0])]
-result += Image.fromarray(result['r0'][1])
-result += Image.fromarray(result['r1']['x_inter'][1])
-result += Image.fromarray(result['r1']['pred_x0'][1])
+result = [Image.fromarray(rett['r0'][0])]
+result += [Image.fromarray(rett['r0'][1])]
+result += [Image.fromarray(rett['r1']['x_inter'][1])]
+result += [Image.fromarray(rett['r1']['pred_x0'][1])]
 
-for i in result['r1']['x_inter2']:
-    result += Image.fromarray(i)
-for i in result['r1']['pred_x02']:
-    result += Image.fromarray(i)
+for i in rett['r1']['x_inter2']:
+    result += [Image.fromarray(i)]
+for i in rett['r1']['pred_x02']:
+    result += [Image.fromarray(i)]
     
 #result.append(Image.fromarray(result.r1['pred_x02'][1]))
 print("r size ",len(result))
