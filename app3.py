@@ -11,8 +11,7 @@ from gradio_scribble2image import create_demo as create_demo_scribble
 from gradio_scribble2image_interactive import \
     create_demo as create_demo_scribble_interactive
 from gradio_seg2image import create_demo as create_demo_seg
-from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
-                   DEFAULT_BASE_MODEL_URL, Model)
+
 
 with gr.Blocks(css='style.css') as demo:
     with gr.Tabs():
