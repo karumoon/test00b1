@@ -651,7 +651,8 @@ class Model:
 
         results = [x_samples[i] for i in range(num_samples)]
         
-        ret={'r0':[detected_map,result],'r1':intermediates}
+        ret={'r0':[detected_map] + results,'r1':intermediates}
+        
         return ret
 
     
