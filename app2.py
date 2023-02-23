@@ -73,7 +73,7 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"aaa__"+str(m_num)+"__"+randStr()+".jpg"
+    fn=m_dir+"ccc__"+str(m_num)+"__"+randStr()+".jpg"
     print(fn)
     grid.save(fn,"jpeg")                                                                                                                                                                                          
     return grid     
