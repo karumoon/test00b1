@@ -638,7 +638,8 @@ class Model:
             verbose=False,
             eta=eta,
             unconditional_guidance_scale=scale,
-            unconditional_conditioning=un_cond)
+            unconditional_conditioning=un_cond,
+            temperature=0.0)
         
         
         if config.save_memory:
