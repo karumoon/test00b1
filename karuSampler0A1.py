@@ -122,9 +122,9 @@ class DDIMSampler(object):
     @torch.no_grad()
     def ddim_sampling(self, cond, shape,
                       x_T=None, ddim_use_original_steps=False,
-                      callback=None, timesteps=None, quantize_denoised=False,
+                      callback=None, timesteps=None, quantize_denoised=True,
                       mask=None, x0=None, img_callback=None, log_every_t=100,
-                      temperature=1., noise_dropout=0., score_corrector=None, corrector_kwargs=None,
+                      temperature=0.1, noise_dropout=0., score_corrector=None, corrector_kwargs=None,
                       unconditional_guidance_scale=1., unconditional_conditioning=None, dynamic_threshold=None,
                       ucg_schedule=None):
         device = self.model.betas.device
@@ -252,8 +252,8 @@ class DDIMSampler(object):
         noise = sigma_t * noise_like(x.shape, device, repeat_noise) * temperature
         if noise_dropout > 0.:
             noise = torch.nn.functional.dropout(noise, p=noise_dropout)
-        #x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
-        x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.7 + pred_x0 * 0.3
+        x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
+        #x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.99 + pred_x0 * 0.01
         
         return x_prev, pred_x0
 
