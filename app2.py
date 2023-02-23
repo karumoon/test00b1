@@ -55,10 +55,10 @@ ips = [
 """
 
 m_dir="/content/drive/MyDrive/aipic004/"
-m_dir="./"
+#m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
-  arrS1.extend(["q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6"])
+  arrS1.extend(["q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9"])
   str=""
   str+=random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)
   return str
@@ -129,7 +129,7 @@ def saveArrImg(rett):
     return
 
 def loopProcess():
-    while Ture:
+    while True:
         rett=getProcess()
         saveArrImg(rett)
     return
