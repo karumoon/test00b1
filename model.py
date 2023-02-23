@@ -550,7 +550,7 @@ class Model:
         if config.save_memory:
             self.model.low_vram_shift(is_diffusing=True)
         
-        print(ddim)steps,num_samples,shape,cond,eta,unconditional_guidance_scale,unconditional_conditioning)
+        print(ddim_steps,num_samples,shape,cond,eta,unconditional_guidance_scale,unconditional_conditioning)
         
         samples, intermediates = self.ddim_sampler.sample(
             ddim_steps,
