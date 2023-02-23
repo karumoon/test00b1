@@ -581,7 +581,7 @@ class Model:
     @torch.inference_mode()
     def process_pose_user(self, input_image, prompt, a_prompt, n_prompt,
                      num_samples, image_resolution, detect_resolution,
-                     ddim_steps, scale, seed, eta):
+                     ddim_steps, scale, seed, eta,temp=0.0):
         
         
         self.load_weight('pose')
@@ -639,7 +639,7 @@ class Model:
             eta=eta,
             unconditional_guidance_scale=scale,
             unconditional_conditioning=un_cond,
-            temperature=0.0)
+            temperature=temp)
         
         
         if config.save_memory:
