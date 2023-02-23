@@ -95,17 +95,20 @@ def image_grid(imgs, rows=2, cols=3):
 #result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
 #result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
 
-result = [Image.fromarray(result.r0[0])]
-result.append(Image.fromarray(result.r0[1]))
-result.append(Image.fromarray(result.r1['x_inter'][1]))
-result.append(Image.fromarray(result.r1['pred_x0'][1]))
-for i in result.r1['x_inter2']:
+dir(result)
+
+result = [Image.fromarray(result['r0'][0])]
+result.append(Image.fromarray(result['r0'][1]))
+result.append(Image.fromarray(result['r1']['x_inter'][1]))
+result.append(Image.fromarray(result['r1']['pred_x0'][1]))
+for i in result['r1']['x_inter2']:
     result.append(Image.fromarray(i))
-for i in result.r1['pred_x02']:
+for i in result['r1']['pred_x02']:
     result.append(Image.fromarray(i))
     
 #result.append(Image.fromarray(result.r1['pred_x02'][1]))
 print("r size ",len(result))
 image_grid(result,1,len(result))
+
 
     
