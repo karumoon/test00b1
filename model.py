@@ -49,6 +49,11 @@ DEFAULT_BASE_MODEL_URL = 'DEFAULT_BASE_MODEL_URL_PLACEHOLDER'
 # DEFAULT_BASE_MODEL_FILENAME = 'anything-v4.0-pruned.safetensors'
 # DEFAULT_BASE_MODEL_URL = 'https://huggingface.co/andite/anything-v4.0/resolve/main/anything-v4.0-pruned.safetensors'
 
+DEFAULT_BASE_MODEL_REPO = 'Karumoon/test00a1'
+DEFAULT_BASE_MODEL_FILENAME = 'clarity_19.safetensors'
+DEFAULT_BASE_MODEL_URL = 'https://huggingface.co/Karumoon/test00a1/resolve/main/clarity_19.safetensors'
+
+
 class Model:
     def __init__(self,
                  model_config_path: str = 'ControlNet/models/cldm_v15.yaml',
