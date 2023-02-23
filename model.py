@@ -26,7 +26,8 @@ from annotator.openpose import apply_openpose
 from annotator.uniformer import apply_uniformer
 from annotator.util import HWC3, resize_image
 from cldm.model import create_model, load_state_dict
-from ldm.models.diffusion.ddim import DDIMSampler
+#from ldm.models.diffusion.ddim import DDIMSampler
+from karuSamplerA01 import DDIMSampler
 from share import *
 
 MODEL_NAMES = {
