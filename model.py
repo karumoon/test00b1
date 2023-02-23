@@ -515,7 +515,8 @@ class Model:
         detected_map = HWC3(detected_map)
         img = resize_image(input_image, image_resolution)
         H, W, C = img.shape
-
+        print(img.shape)
+        print(H,W,C)
         detected_map = cv2.resize(detected_map, (W, H),
                                   interpolation=cv2.INTER_NEAREST)
 
@@ -543,10 +544,14 @@ class Model:
             [self.model.get_learned_conditioning([n_prompt] * num_samples)]
         }
         shape = (4, H // 8, W // 8)
-
+        
+        print(shape)
+        
         if config.save_memory:
             self.model.low_vram_shift(is_diffusing=True)
-
+        
+        print(ddim)steps,num_samples,shape,cond,eta,unconditional_guidance_scale,unconditional_conditioning)
+        
         samples, intermediates = self.ddim_sampler.sample(
             ddim_steps,
             num_samples,
@@ -556,7 +561,9 @@ class Model:
             eta=eta,
             unconditional_guidance_scale=scale,
             unconditional_conditioning=un_cond)
-
+        
+        print(samples,intermediates)
+        
         if config.save_memory:
             self.model.low_vram_shift(is_diffusing=False)
 
