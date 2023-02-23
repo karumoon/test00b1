@@ -5,7 +5,6 @@ import pathlib
 import shlex
 import subprocess
 
-import gradio as gr
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -28,21 +27,10 @@ for name in names:
         continue
     subprocess.run(shlex.split(command), cwd='ControlNet/annotator/ckpts/')
 
-from gradio_canny2image import create_demo as create_demo_canny
-from gradio_depth2image import create_demo as create_demo_depth
-from gradio_fake_scribble2image import create_demo as create_demo_fake_scribble
-from gradio_hed2image import create_demo as create_demo_hed
-from gradio_hough2image import create_demo as create_demo_hough
-from gradio_normal2image import create_demo as create_demo_normal
-from gradio_pose2image import create_demo as create_demo_pose
-from gradio_scribble2image import create_demo as create_demo_scribble
-from gradio_scribble2image_interactive import \
-    create_demo as create_demo_scribble_interactive
-from gradio_seg2image import create_demo as create_demo_seg
-from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
-                   DEFAULT_BASE_MODEL_URL, Model)
 
 MAX_IMAGES = 4
 ALLOW_CHANGING_BASE_MODEL = 'hysts/ControlNet-with-other-models'
 
 model = Model()
+
+
