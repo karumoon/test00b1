@@ -91,8 +91,7 @@ def image_grid(imgs, rows=2, cols=3):
     grid.save(fn,"jpeg")                                                                                                                                                                                          
     return grid     
 
-print(result)
-print(result.length)
+
 img_grid(result)
 
 
