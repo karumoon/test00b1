@@ -252,7 +252,9 @@ class DDIMSampler(object):
         noise = sigma_t * noise_like(x.shape, device, repeat_noise) * temperature
         if noise_dropout > 0.:
             noise = torch.nn.functional.dropout(noise, p=noise_dropout)
-        x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
+        #x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
+        x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.7 + pred_x0 * 0.3
+        
         return x_prev, pred_x0
 
     @torch.no_grad()
