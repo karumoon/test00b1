@@ -7,7 +7,7 @@ import subprocess
 
 from PIL import Image                                                                                                                                                                                                                         
 import random
-from numpy import asanyarray
+from numpy as np
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -53,7 +53,7 @@ ips = [
         ]
 """
 img=Image.open("poose01.png")
-img=asanyarray(img)
+img=np.asanyarray(img)
 result=model.process_pose(input_image=img,
                    prompt="focus ass",
                    a_prompt="girl",
@@ -91,8 +91,19 @@ def image_grid(imgs, rows=2, cols=3):
     grid.save(fn,"jpeg")                                                                                                                                                                                          
     return grid     
 
+print(len(result))
+print(len(result[0]))
+print(len(result[0][0]))
 
-image_grid(result)
+result = np.reshape(result[0], (len(result[0][0]), len(result[0])))
+result = np.reshape(result[1], (len(result[1][0]), len(result[1])))
+
+result = Image.fromarray(result)
+print(result)
+print(result.size)
+
+
+image_grid([result])
 
 
     
