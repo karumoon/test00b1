@@ -94,7 +94,7 @@ def image_grid(imgs, rows=2, cols=3):
 
 def changToimgArr(tense):
   num_samples = 1
-  x_samples = model.decode_first_stage(tense)
+  x_samples = model.model.decode_first_stage(tense)
   x_samples = (
         einops.rearrange(x_samples, 'b c h w -> b h w c') * 127.5 +
         127.5).cpu().numpy().clip(0, 255).astype(np.uint8)
