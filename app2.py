@@ -7,7 +7,7 @@ import subprocess
 
 from PIL import Image                                                                                                                                                                                                                         
 import random
-
+from numpy import asanyarray
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -53,6 +53,7 @@ ips = [
         ]
 """
 img=Image.open("poose01.png")
+img=asanyarray(img)
 result=model.process_pose(input_image=img,
                    prompt="focus ass",
                    a_prompt="girl",
