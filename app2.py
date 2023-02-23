@@ -53,20 +53,6 @@ ips = [
             image_resolution, detect_resolution, ddim_steps, scale, seed, eta
         ]
 """
-img=Image.open("poose01.png")
-img=np.asanyarray(img)
-rett=model.process_pose_user(input_image=img,
-                   prompt="focus ass",
-                   a_prompt="girl",
-                   n_prompt="bad anatomy",
-                   num_samples=1,
-                   ddim_steps=20,
-                   image_resolution=512,
-                   detect_resolution=512,
-                   scale=9,
-                   seed=-1,
-                   eta=0.0
-)
 
 m_dir="/content/drive/MyDrive/aipic004/"
 m_dir="./"
@@ -107,26 +93,48 @@ def returnImage(tense):
   rr00 = Image.fromarray(rr00[0])
   return rr00
 
+def getProcess():
+    img=Image.open("poose01.png")
+    img=np.asanyarray(img)
+    rett=model.process_pose_user(input_image=img,
+                   prompt="focus ass",
+                   a_prompt="girl",
+                   n_prompt="bad anatomy",
+                   num_samples=1,
+                   ddim_steps=20,
+                   image_resolution=512,
+                   detect_resolution=512,
+                   scale=9,
+                   seed=-1,
+                   eta=0.0
+    )
+    return rett
 
-dir(rett)
+def saveArrImg(rett):
+    result = [Image.fromarray(rett['r0'][0])]
+    result += [Image.fromarray(rett['r0'][1])]
 
-result = [Image.fromarray(rett['r0'][0])]
-result += [Image.fromarray(rett['r0'][1])]
+    for i in rett['r1']['x_inter']:
+        result += [returnImage(i)]
+    for i in rett['r1']['pred_x0']:
+        result += [returnImage(i)]
 
-for i in rett['r1']['x_inter']:
-    result += [returnImage(i)]
-for i in rett['r1']['pred_x0']:
-    result += [returnImage(i)]
-
-for i in rett['r1']['x_inter2']:
-    result += [returnImage(i)]
-for i in rett['r1']['pred_x02']:
-    result += [returnImage(i)]
+    for i in rett['r1']['x_inter2']:
+        result += [returnImage(i)]
+    for i in rett['r1']['pred_x02']:
+        result += [returnImage(i)]
     
-#result.append(Image.fromarray(result.r1['pred_x02'][1]))
-print("r size ",len(result))
-image_grid(result,len(result),1)
+    print("r size ",len(result))
+    image_grid(result,len(result),1)
+    return
 
+def loopProcess():
+    while Ture:
+        rett=getProcess()
+        saveArrImg(rett)
+    return
+
+loopProcess()
 
     
     
