@@ -9,6 +9,7 @@ from PIL import Image
 import random
 import numpy as np
 import einops
+import math
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -73,10 +74,10 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"ggg___"+str(m_num)+"__"+randStr()+".jpg"
+    fn=m_dir+"ttt___"+str(m_num)+"__"+randStr()
     print(fn)
-    grid.save(fn,"jpeg") 
-    imgs[1].save(fn+"_a","png")                                                                                                                                                                                         
+    grid.save(fn+".jpg","jpeg") 
+    imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
     return grid     
 
 def changToimgArr(tense):
@@ -97,14 +98,16 @@ def returnImage(tense):
 def getProcess():
     img=Image.open("poose01.png")
     img=np.asanyarray(img)
+    pt01="professional photograph,toned physique,(highly detailed:1.2), Award-winning photograph,detailed face, detailed eyes, cinematic lighting,Intricately detailed Full body"
+    pt01="professional photograph"
     rett=model.process_pose_user(input_image=img,
-                   prompt="focus ass",
-                   a_prompt="girl",
-                   n_prompt="bad anatomy",
+                   prompt=pt01,
+                   a_prompt="",
+                   n_prompt="",
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=512,
-                   detect_resolution=512,
+                   image_resolution=(768,768),
+                   detect_resolution=(768,768),
                    scale=9,
                    seed=-1,
                    eta=0.0
@@ -126,7 +129,7 @@ def saveArrImg(rett):
         result += [returnImage(i)]
     """
     print("r size ",len(result))
-    image_grid(result,len(result)/2,2)
+    image_grid(result,math.ceil(len(result)/2),2)
     return
 
 def loopProcess():
