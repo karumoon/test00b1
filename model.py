@@ -507,12 +507,7 @@ class Model:
     def process_pose(self, input_image, prompt, a_prompt, n_prompt,
                      num_samples, image_resolution, detect_resolution,
                      ddim_steps, scale, seed, eta):
-        print( input_image, prompt, a_prompt, n_prompt,
-                     num_samples, image_resolution, detect_resolution,
-                     ddim_steps, scale, seed, eta
-        )
-        print("image_resolution",image_resolution)
-        print("detect_resolution",detect_resolution)
+        
         
         self.load_weight('pose')
 
@@ -522,9 +517,7 @@ class Model:
         detected_map = HWC3(detected_map)
         img = resize_image(input_image, image_resolution)
         H, W, C = img.shape
-        print(img)
-        print(img.shape)
-        print(H,W,C)
+        
         detected_map = cv2.resize(detected_map, (W, H),
                                   interpolation=cv2.INTER_NEAREST)
 
@@ -553,7 +546,6 @@ class Model:
         }
         shape = (4, H // 8, W // 8)
         
-        print(shape)
         
         if config.save_memory:
             self.model.low_vram_shift(is_diffusing=True)
@@ -573,7 +565,6 @@ class Model:
             unconditional_guidance_scale=scale,
             unconditional_conditioning=un_cond)
         
-        print(samples,intermediates)
         
         if config.save_memory:
             self.model.low_vram_shift(is_diffusing=False)
