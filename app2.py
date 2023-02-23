@@ -54,18 +54,18 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic004/"
+m_dir="/content/drive/MyDrive/aipic005/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
-  arrS1.extend(["q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9"])
+  arrS1.extend(["q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6"])
   str=""
   str+=random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)
   return str
 
 global m_num
 m_num=0
-def image_grid(imgs, rows=1, cols=1): 
+def image_grid(imgs, rows=2, cols=3): 
     global m_num
     m_num += 1                                                                                                                                                                                                        
     w, h = imgs[0].size                                                                                                                                                                                                                       
@@ -73,10 +73,10 @@ def image_grid(imgs, rows=1, cols=1):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"ccc__"+str(m_num)+"__"+randStr()+".jpg"
+    fn=m_dir+"ggg___"+str(m_num)+"__"+randStr()+".jpg"
     print(fn)
-    grid.save(fn,"jpeg")
-    imgs[1].save(fn+"_a","png")
+    grid.save(fn,"jpeg") 
+    imgs[1].save(fn+"_a","png")                                                                                                                                                                                         
     return grid     
 
 def changToimgArr(tense):
@@ -115,18 +115,18 @@ def saveArrImg(rett):
     result = [Image.fromarray(rett['r0'][0])]
     result += [Image.fromarray(rett['r0'][1])]
 
-    for i in rett['r1']['x_inter']:
-        result += [returnImage(i)]
-    for i in rett['r1']['pred_x0']:
-        result += [returnImage(i)]
-
+    for i in range(len(rett['r1']['x_inter2'])):
+        result += [returnImage(rett['r1']['x_inter2'][i])]
+        result += [returnImage(rett['r1']['pred_x02'][i])]
+    
+    """
     for i in rett['r1']['x_inter2']:
         result += [returnImage(i)]
     for i in rett['r1']['pred_x02']:
         result += [returnImage(i)]
-    
+    """
     print("r size ",len(result))
-    image_grid(result,len(result),1)
+    image_grid(result,len(result)/2,2)
     return
 
 def loopProcess():
@@ -136,6 +136,3 @@ def loopProcess():
     return
 
 loopProcess()
-
-    
-    
