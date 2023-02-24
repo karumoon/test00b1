@@ -22,10 +22,12 @@ m_imArr = []
 index = 1
 print((33,44)*(2))
 for frame in ImageSequence.Iterator(im):
-    m_imArr.append(frame.resize(frame.size*2))
-    #print(frame.size)
-    print(m_imArr[0].size)
-    #frame.save("frame%d.png" % index)
+    w , h = frame.size
+    if index % 10 == 0 :
+      print(index,index/10,int(3.43242),math.floor(3.4234))
+      m_imArr.append(frame.resize( ( w * 2, h * 2 )) )
+      print(m_imArr[int(index/10) - 1].size)
+      #frame.save("frame%d.png" % index)
     index += 1
 
 
@@ -211,6 +213,7 @@ def saveArrImg(rett,txt):
 
 def loopProcess():
     global m_seedNum
+    global m_imArr
     while True:
         pt01=makeKeyword()
         
@@ -220,10 +223,12 @@ def loopProcess():
         img2=np.asanyarray(img2)
         img2 = torch.from_numpy(img2).float().to("cpu")
         
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"),imgUser01=None)
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=m_imArr[0],imgUser01=None)
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"),imgUser01=getLastOfRett(rett))
-        saveArrImg(rett,pt01)
+        for i in range(1,10):
+          rett=getProcess(pt01,seedNum=m_seedNum,img2=m_imArr[i],imgUser01=getLastOfRett(rett))
+          saveArrImg(rett,pt01)
+        """
         rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po003.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
         rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po004.PNG"),imgUser01=getLastOfRett(rett))
@@ -236,6 +241,7 @@ def loopProcess():
         saveArrImg(rett,pt01)
         rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po012.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
+        """
         
     return
 
