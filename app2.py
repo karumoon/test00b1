@@ -125,7 +125,7 @@ def makeKeyword():
     key08=["ass focus","art style","pinup"]
     key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
-    key11=["Caucasian","asian","hispanic","idian","korean"]
+    key11=["indian","african"]#"Caucasian","asian","hispanic","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
     pt01 = "out of focus trees in background,sfw,"#,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += random.choice(key01)+","
@@ -143,7 +143,7 @@ def makeKeyword():
     pt01 += ","+randStr()
     return pt01
 
-def getProcess(pt01="",seedNum=-1,img2=False):
+def getProcess(pt01="",seedNum=-1,img2=False,imgUser01=False):
     #img=Image.open("poose01.png")
     img=np.asanyarray(img2)
 
@@ -161,7 +161,7 @@ def getProcess(pt01="",seedNum=-1,img2=False):
                    scale=10,
                    seed=seedNum,
                    eta=0.0,
-                   temp=0.0)
+                   temp=0.0,imgUser01=imgUser01)
     return rett
 
 
@@ -189,23 +189,23 @@ def loopProcess():
     while True:
         pt01=makeKeyword()
         
-        m_seedNum=random.randint(0,99999999)
+        m_seedNum=random.randint(0,65535)
         print("seedNum",m_seedNum)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"),imgUser01=False)
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po003.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po003.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po004.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po004.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po005.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po005.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po006.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po006.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po009.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po009.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po012.PNG"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po012.PNG"),imgUser01=rett['r0'][1])
         saveArrImg(rett,pt01)
         
     return
