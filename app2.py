@@ -5,7 +5,7 @@ import pathlib
 import shlex
 import subprocess
 
-from PIL import Image                                                                                                                                                                                                                         
+from PIL import Image, ImageFont, ImageDraw                                                                                                                                                                                                                          
 import random
 import numpy as np
 import einops
@@ -66,15 +66,23 @@ def randStr():
 
 global m_num
 m_num=0
-def image_grid(imgs, rows=2, cols=3): 
+def image_grid(imgs, rows=2, cols=3,txt=""): 
     global m_num
+    
+    #from PIL import Image, ImageFont, ImageDraw 
+    draw = ImageDraw.Draw(imgs[1]) 
+    #font = ImageFont.truetype(r'C:\Users\System-Pc\Desktop\arial.ttf', 20) 
+    #text = 'LAUGHING IS THE \n BEST MEDICINE'
+    # drawing text size
+    draw.text((5, 5), txt)#, font = font, align ="left") 
+
     m_num += 1                                                                                                                                                                                                        
     w, h = imgs[0].size                                                                                                                                                                                                                       
     grid = Image.new('RGB', size=(cols*w, rows*h))                                                                                                                                                                                            
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"jj00___"+str(m_num)+"__"+randStr()
+    fn=m_dir+"kk00___"+str(m_num)+"__"+randStr()
     print(fn)
     grid.save(fn+".jpg","jpeg") 
     imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
@@ -95,9 +103,7 @@ def returnImage(tense):
   rr00 = Image.fromarray(rr00[0])
   return rr00
 
-def getProcess():
-    img=Image.open("poose01.png")
-    img=np.asanyarray(img)
+def makeKeyword():
     #bloom, god rays, hard shadows, studio lighting, soft lighting, diffused lighting, rim lighting, volumetric lighting, specular lighting, cinematic lighting, luminescence, translucency, subsurface scattering, global illumination, indirect light, radiant light rays, bioluminescent details, ektachrome, glowing, shimmering light, halo, iridescent, backlighting, caustics
     key01=["professional lighting","cinematic lighting","bloom","god rays","soft lighting"]
     key02=["seductive look","[[[smiling]]]","smile","angry","sad"]
@@ -109,25 +115,30 @@ def getProcess():
     key08=["HDR","4K resolution","8k resolution"]
     key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
-    key11=["Caucasian","asian","hispanic","idian","korean","sexy Caucasian","sexy korean","handsome korean"]
+    key11=["Caucasian","asian","hispanic","idian","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
-    pt01 = "sfw,(detailed skin),"
-    pt01 +=random.choice(key01)+","
-    pt01 +=random.choice(key02)+","
+    pt01 = "sfw,(detailed skin),(detailed face),(detailed eyes)"
+    pt01 += random.choice(key01)+","
+    pt01 += random.choice(key02)+","
     pt01 += random.choice(key03)+","
-    pt01 +=random.choice(key04)+","
-    pt01+=random.choice(key05)+","
-    pt01+=random.choice(key06)+","
-    pt01+=random.choice(key07)+","
-    pt01+=random.choice(key08)+","
-    pt01+=random.choice(key10)+" "+random.choice(key09)+","
-    #pt01+=random.choice(key10)+","
-    pt01+=random.choice(key11)+","
-    pt01+=random.choice(key12)
-    
+    pt01 += random.choice(key04)+","
+    pt01 += random.choice(key05)+","
+    pt01 += random.choice(key06)+","
+    pt01 += random.choice(key07)+","
+    pt01 += random.choice(key08)+","
+    pt01 += random.choice(key10)+" "+random.choice(key09)+","
+    #pt01+= random.choice(key10)+","
+    pt01 += random.choice(key11)+","
+    pt01 += random.choice(key12)
+    pt01 += ","+randStr()
+    return pt01
+
+def getProcess(pt01):
+    img=Image.open("poose01.png")
+    img=np.asanyarray(img)
 
     nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
-    pt01 += ","+randStr()
+    
     
     rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
@@ -142,6 +153,8 @@ def getProcess():
                    eta=0.0,
                    temp=0.0)
     return rett
+
+
 
 def saveArrImg(rett):
     result = [Image.fromarray(rett['r0'][0])]
@@ -163,8 +176,10 @@ def saveArrImg(rett):
 
 def loopProcess():
     while True:
-        rett=getProcess()
-        saveArrImg(rett)
+        pt01=makeKeyword()
+        for i in range(5):
+          rett=getProcess(pt01)
+          saveArrImg(rett,pt01)
     return
 
 loopProcess()
