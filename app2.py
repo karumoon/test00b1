@@ -127,7 +127,7 @@ def makeKeyword():
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["Caucasian","asian","hispanic","idian","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
-    pt01 = "out of focus trees in background –ar 9:16 –testp –v 3 –,sfw,"#,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 = "out of focus trees in background,sfw,"#,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += random.choice(key01)+","
     pt01 += random.choice(key02)+","
     pt01 += random.choice(key03)+","
