@@ -91,8 +91,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"e00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"e01___"+str(m_num)+"__"+randss
+    fn=m_dir+"g00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"g01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -172,7 +172,7 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
 def getLastOfRett(rett):
   
   ll=len(rett['r1']['pred_x02'])
-  return rett['r1']['pred_x02'][ll-1]
+  return rett['r1']['pred_x02'][ll-18]
 
 def saveArrImg(rett,txt):
     result = [Image.fromarray(rett['r0'][0])]
