@@ -65,8 +65,10 @@ def randStr():
   return str
 
 global m_num
+global m_seedNum
 m_num=0
-def image_grid(imgs, rows=2, cols=3,txt=""): 
+m_seedNum=-1
+def image_grid(imgs, rows=2, cols=3,txt2=""): 
     global m_num
     
     #from PIL import Image, ImageFont, ImageDraw 
@@ -74,6 +76,7 @@ def image_grid(imgs, rows=2, cols=3,txt=""):
     #font = ImageFont.truetype(r'C:\Users\System-Pc\Desktop\arial.ttf', 20) 
     #text = 'LAUGHING IS THE \n BEST MEDICINE'
     # drawing text size
+    txt = txt2 + " seed="+str(m_seedNum)
     draw.text((5, 5), txt[0:50])#, font = font, align ="left") 
     draw.text((5, 15), txt[50:100])#, font = font, align ="left") 
     draw.text((5, 25), txt[100:150])#, font = font, align ="left") 
@@ -85,11 +88,14 @@ def image_grid(imgs, rows=2, cols=3,txt=""):
     grid = Image.new('RGB', size=(cols*w, rows*h))                                                                                                                                                                                            
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
-        grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"mm00___"+str(m_num)+"__"+randStr()
+        grid.paste(img, box=(i%cols*w, i//cols*h))
+    randss=randStr()
+    fn=m_dir+"mm00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"mm01___"+str(m_num)+"__"+randss
+    
     print(fn)
     grid.save(fn+".jpg","jpeg") 
-    imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
+    imgs[1].save(fn2+"_a"+".png","png")                                                                                                                                                                                         
     return grid     
 
 def changToimgArr(tense):
@@ -137,7 +143,7 @@ def makeKeyword():
     pt01 += ","+randStr()
     return pt01
 
-def getProcess(pt01):
+def getProcess(pt01,seedNum=-1):
     img=Image.open("poose01.png")
     img=np.asanyarray(img)
 
@@ -153,7 +159,7 @@ def getProcess(pt01):
                    image_resolution=512,
                    detect_resolution=512,
                    scale=9,
-                   seed=-1,
+                   seed=seedNum,
                    eta=0.0,
                    temp=0.0)
     return rett
@@ -182,7 +188,8 @@ def loopProcess():
     while True:
         pt01=makeKeyword()
         for i in range(3):
-          rett=getProcess(pt01)
+          m_seedNum=random.randint(0,99999999)
+          rett=getProcess(pt01,m_seedNum)
           saveArrImg(rett,pt01)
     return
 
