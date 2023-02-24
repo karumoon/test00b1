@@ -266,8 +266,15 @@ class DDIMSampler(object):
         if type(imgUser01) != type(None):
           print("p_sample_ddim imgUser01 okkkkkkkkkkkkkkk index=",index)
           print(len(imgUser01))
-          if index>15:
-            x_prev = (x_prev * 0.9) + (imgUser01 * 0.1)
+          print(" x_prev shape",x_prev.shape)
+          print(" imgUser01 shape",imgUser01.shape)
+          a1,a2,a3,a4=x_prev.shape
+          b1,b2,b3,b4=imgUser01.shape
+          imgUser01=imgUser01[0:a1,0:a2,0:a3,0:a4]
+          if b4 is a4:
+            print("b4 a4 same")
+          if index>10:
+            x_prev = (x_prev * 0.98) + (imgUser01 * 0.02)
         else:
           print("p_sample_ddim none imgUser01 is False")
         print("b=",b)
