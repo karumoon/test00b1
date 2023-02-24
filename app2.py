@@ -156,7 +156,7 @@ def getProcess(pt01):
 
 
 
-def saveArrImg(rett):
+def saveArrImg(rett,txt):
     result = [Image.fromarray(rett['r0'][0])]
     result += [Image.fromarray(rett['r0'][1])]
 
@@ -171,7 +171,7 @@ def saveArrImg(rett):
         result += [returnImage(i)]
     """
     print("r size ",len(result))
-    image_grid(result,math.ceil(len(result)/2),2)
+    image_grid(result,math.ceil(len(result)/2),2,txt)
     return
 
 def loopProcess():
