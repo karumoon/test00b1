@@ -143,9 +143,9 @@ def makeKeyword():
     pt01 += ","+randStr()
     return pt01
 
-def getProcess(pt01,seedNum=-1):
-    img=Image.open("poose01.png")
-    img=np.asanyarray(img)
+def getProcess(pt01,seedNum=-1,img2):
+    #img=Image.open("poose01.png")
+    img=np.asanyarray(img2)
 
     nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
     
@@ -187,10 +187,16 @@ def saveArrImg(rett,txt):
 def loopProcess():
     while True:
         pt01=makeKeyword()
-        for i in range(3):
-          m_seedNum=random.randint(0,99999999)
-          rett=getProcess(pt01,m_seedNum)
-          saveArrImg(rett,pt01)
+        
+        m_seedNum=random.randint(0,99999999)
+        rett=getProcess(pt01,m_seedNum,Image.open("po01.png"))
+        saveArrImg(rett,pt01)
+        rett=getProcess(pt01,m_seedNum,Image.open("po03.png"))
+        saveArrImg(rett,pt01)
+        rett=getProcess(pt01,m_seedNum,Image.open("po06.png"))
+        saveArrImg(rett,pt01)
+        rett=getProcess(pt01,m_seedNum,Image.open("po09.png"))
+        saveArrImg(rett,pt01)
     return
 
 loopProcess()
