@@ -55,7 +55,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic006/"
+m_dir="/content/drive/MyDrive/aipic007/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -90,8 +90,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"pamm00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"pamm01___"+str(m_num)+"__"+randss
+    fn=m_dir+"pemm00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"pemm01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -127,7 +127,7 @@ def makeKeyword():
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["Caucasian","asian","hispanic","idian","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
-    pt01 = "sfw,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 = "out of focus trees in background –ar 9:16 –testp –v 3 –,sfw,"#,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += random.choice(key01)+","
     pt01 += random.choice(key02)+","
     pt01 += random.choice(key03)+","
@@ -143,7 +143,7 @@ def makeKeyword():
     pt01 += ","+randStr()
     return pt01
 
-def getProcess(pt01,seedNum=-1,img2):
+def getProcess(pt01="",seedNum=-1,img2=False):
     #img=Image.open("poose01.png")
     img=np.asanyarray(img2)
 
@@ -155,7 +155,7 @@ def getProcess(pt01,seedNum=-1,img2):
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=30,
+                   ddim_steps=20,
                    image_resolution=512,
                    detect_resolution=512,
                    scale=10,
@@ -185,18 +185,29 @@ def saveArrImg(rett,txt):
     return
 
 def loopProcess():
+    global m_seedNum
     while True:
         pt01=makeKeyword()
         
         m_seedNum=random.randint(0,99999999)
-        rett=getProcess(pt01,m_seedNum,Image.open("po01.png"))
+        print("seedNum",seedNum)
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,m_seedNum,Image.open("po03.png"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,m_seedNum,Image.open("po06.png"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po003.PNG"))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,m_seedNum,Image.open("po09.png"))
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po004.PNG"))
         saveArrImg(rett,pt01)
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po005.PNG"))
+        saveArrImg(rett,pt01)
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po006.PNG"))
+        saveArrImg(rett,pt01)
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po009.PNG"))
+        saveArrImg(rett,pt01)
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po012.PNG"))
+        saveArrImg(rett,pt01)
+        
     return
 
 loopProcess()
