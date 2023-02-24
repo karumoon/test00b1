@@ -56,7 +56,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic009/"
+m_dir="/content/drive/MyDrive/aipic010/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -91,8 +91,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"g00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"g01___"+str(m_num)+"__"+randss
+    fn=m_dir+"k00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"k01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -169,10 +169,10 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
     return rett
 
 
-def getLastOfRett(rett):
+def getLastOfRett(rett,su=1):
   
   ll=len(rett['r1']['pred_x02'])
-  return rett['r1']['pred_x02'][ll-18]
+  return rett['r1']['pred_x02'][ll-su]
 
 def saveArrImg(rett,txt):
     result = [Image.fromarray(rett['r0'][0])]
