@@ -126,7 +126,7 @@ class DDIMSampler(object):
                       mask=None, x0=None, img_callback=None, log_every_t=100,
                       temperature=0.1, noise_dropout=0., score_corrector=None, corrector_kwargs=None,
                       unconditional_guidance_scale=1., unconditional_conditioning=None, dynamic_threshold=None,
-                      ucg_schedule=None,imgUser01=False):
+                      ucg_schedule=None,imgUser01=None):
         device = self.model.betas.device
         b = shape[0]
         if x_T is None:
@@ -162,6 +162,11 @@ class DDIMSampler(object):
             
             #print("--")
             #print("karuSampling",index,ddim_use_original_steps,len(intermediates['x_inter']),"-----eee---")
+            if imgUser01 != None:
+              print("ddim_sampling imgUser01 not NONE")
+            else:
+              print("ddim_sampling imgUser01 NONE")
+              
             outs = self.p_sample_ddim(img, cond, ts, index=index, use_original_steps=ddim_use_original_steps,
                                       quantize_denoised=quantize_denoised, temperature=temperature,
                                       noise_dropout=noise_dropout, score_corrector=score_corrector,
@@ -186,7 +191,7 @@ class DDIMSampler(object):
     def p_sample_ddim(self, x, c, t, index, repeat_noise=False, use_original_steps=False, quantize_denoised=False,
                       temperature=1., noise_dropout=0., score_corrector=None, corrector_kwargs=None,
                       unconditional_guidance_scale=1., unconditional_conditioning=None,
-                      dynamic_threshold=None,imgUser01=False):
+                      dynamic_threshold=None,imgUser01=None):
         b, *_, device = *x.shape, x.device
 
         if unconditional_conditioning is None or unconditional_guidance_scale == 1.:
@@ -254,8 +259,12 @@ class DDIMSampler(object):
             noise = torch.nn.functional.dropout(noise, p=noise_dropout)
         x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
         #x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.99 + pred_x0 * 0.01
-        if imgUser01 != False:
-            x_prev = x_prev * 0.98 + imgUser01 * 0.02 
+        print("--")
+        if imgUser01 != None:
+          print("p_sample_ddim imgUser01 okkkkkkkkkkkkkkk index=",index)
+          x_prev = (x_prev * 0.1) + (imgUser01 * 0.9)
+        else:
+          print("p_sample_ddim none imgUser01 is False")
         return x_prev, pred_x0
 
     @torch.no_grad()
