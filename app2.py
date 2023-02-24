@@ -10,6 +10,7 @@ import random
 import numpy as np
 import einops
 import math
+import torch
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -55,7 +56,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic007/"
+m_dir="/content/drive/MyDrive/aipic009/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -90,8 +91,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"pemm00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"pemm01___"+str(m_num)+"__"+randss
+    fn=m_dir+"e00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"e01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -143,13 +144,16 @@ def makeKeyword():
     pt01 += ","+randStr()
     return pt01
 
-def getProcess(pt01="",seedNum=-1,img2=False,imgUser01=False):
+def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
     #img=Image.open("poose01.png")
     img=np.asanyarray(img2)
 
     nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
-    
-    
+    print(imgUser01)
+    if type(imgUser01) != None:
+      print("getProcess imgUser01 is not none")
+    else: 
+      print("getProcess imgUser01 is  none")
     rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
@@ -165,6 +169,10 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01=False):
     return rett
 
 
+def getLastOfRett(rett):
+  
+  ll=len(rett['r1']['pred_x02'])
+  return rett['r1']['pred_x02'][ll-1]
 
 def saveArrImg(rett,txt):
     result = [Image.fromarray(rett['r0'][0])]
@@ -191,21 +199,25 @@ def loopProcess():
         
         m_seedNum=random.randint(0,65535)
         print("seedNum",m_seedNum)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"),imgUser01=False)
+        img2=Image.open("po001.PNG")
+        img2=np.asanyarray(img2)
+        img2 = torch.from_numpy(img2).float().to("cpu")
+        
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"),imgUser01=None)
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po003.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po003.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po004.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po004.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po005.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po005.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po006.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po006.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po009.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po009.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
-        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po012.PNG"),imgUser01=rett['r0'][1])
+        rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po012.PNG"),imgUser01=getLastOfRett(rett))
         saveArrImg(rett,pt01)
         
     return
