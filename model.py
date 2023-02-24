@@ -584,7 +584,7 @@ class Model:
                      num_samples, image_resolution, detect_resolution,
                      ddim_steps, scale, seed, eta,temp=0.0,imgUser01 = None):
         
-        if imgUser01 != None:
+        if type(imgUser01) != None:
           print("process_pose_user imgUser01 not false")
         else:
           print("process_pose_user imgUser01 false")
