@@ -76,8 +76,9 @@ def image_grid(imgs, rows=2, cols=3,txt=""):
     # drawing text size
     draw.text((5, 5), txt[0:50])#, font = font, align ="left") 
     draw.text((5, 15), txt[50:100])#, font = font, align ="left") 
-    draw.text((5, 25), txt[150:200])#, font = font, align ="left") 
-    draw.text((5, 35), txt[200:250])#, font = font, align ="left") 
+    draw.text((5, 25), txt[100:150])#, font = font, align ="left") 
+    draw.text((5, 35), txt[150:200])#, font = font, align ="left") 
+    draw.text((5, 45), txt[200:250])#, font = font, align ="left") 
 
     m_num += 1                                                                                                                                                                                                        
     w, h = imgs[0].size                                                                                                                                                                                                                       
@@ -85,9 +86,9 @@ def image_grid(imgs, rows=2, cols=3,txt=""):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"ll00___"+str(m_num)+"__"+randStr()
+    fn=m_dir+"mm00___"+str(m_num)+"__"+randStr()
     print(fn)
-    #grid.save(fn+".jpg","jpeg") 
+    grid.save(fn+".jpg","jpeg") 
     imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
     return grid     
 
@@ -115,7 +116,7 @@ def makeKeyword():
     key05=["toned body","sexy body","healthy body"]
     key06=["Award-winning photograph","professional photograph"]
     key07=["HDR","4K resolution","8k resolution"]
-    key08=["HDR","4K resolution","8k resolution"]
+    key08=["ass focus","art style","pinup"]
     key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["Caucasian","asian","hispanic","idian","korean"]
@@ -180,7 +181,7 @@ def saveArrImg(rett,txt):
 def loopProcess():
     while True:
         pt01=makeKeyword()
-        for i in range(5):
+        for i in range(3):
           rett=getProcess(pt01)
           saveArrImg(rett,pt01)
     return
