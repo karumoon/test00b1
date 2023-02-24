@@ -7,6 +7,7 @@ import random
 import shlex
 import subprocess
 import sys
+from PIL.Image import NONE
 
 import cv2
 import einops
@@ -581,9 +582,13 @@ class Model:
     @torch.inference_mode()
     def process_pose_user(self, input_image, prompt, a_prompt, n_prompt,
                      num_samples, image_resolution, detect_resolution,
-                     ddim_steps, scale, seed, eta,temp=0.0,imgUser01=False):
+                     ddim_steps, scale, seed, eta,temp=0.0,imgUser01 = None):
         
-        
+        if imgUser01 != None:
+          print("process_pose_user imgUser01 not false")
+        else:
+          print("process_pose_user imgUser01 false")
+
         self.load_weight('pose')
 
         input_image = HWC3(input_image)
