@@ -190,7 +190,7 @@ def loopProcess():
         pt01=makeKeyword()
         
         m_seedNum=random.randint(0,99999999)
-        print("seedNum",seedNum)
+        print("seedNum",m_seedNum)
         rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po001.PNG"))
         saveArrImg(rett,pt01)
         rett=getProcess(pt01,seedNum=m_seedNum,img2=Image.open("po002.PNG"))
