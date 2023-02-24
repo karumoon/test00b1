@@ -1,5 +1,6 @@
 """SAMPLING ONLY."""
 
+from ctypes import LittleEndianStructure
 import torch
 import numpy as np
 from tqdm import tqdm
@@ -164,7 +165,7 @@ class DDIMSampler(object):
             
             #print("--")
             #print("karuSampling",index,ddim_use_original_steps,len(intermediates['x_inter']),"-----eee---")
-            if imgUser01 != None:
+            if type(imgUser01) != None:
               print("ddim_sampling imgUser01 not NONE")
             else:
               print("ddim_sampling imgUser01 NONE")
@@ -262,11 +263,18 @@ class DDIMSampler(object):
         x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
         #x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.99 + pred_x0 * 0.01
         print("--")
-        if imgUser01 != None:
+        if type(imgUser01) != type(None):
           print("p_sample_ddim imgUser01 okkkkkkkkkkkkkkk index=",index)
-          x_prev = (x_prev * 0.1) + (imgUser01 * 0.9)
+          print(len(imgUser01))
+          if index>15:
+            x_prev = (x_prev * 0.9) + (imgUser01 * 0.1)
         else:
           print("p_sample_ddim none imgUser01 is False")
+        print("b=",b)
+        print("len x_prev ",len(x_prev))
+        print(" x_prev shape",x_prev.shape)
+        print(" x_prev size",x_prev.size)
+        
         return x_prev, pred_x0
 
     @torch.no_grad()
