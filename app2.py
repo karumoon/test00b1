@@ -74,7 +74,10 @@ def image_grid(imgs, rows=2, cols=3,txt=""):
     #font = ImageFont.truetype(r'C:\Users\System-Pc\Desktop\arial.ttf', 20) 
     #text = 'LAUGHING IS THE \n BEST MEDICINE'
     # drawing text size
-    draw.text((5, 5), txt)#, font = font, align ="left") 
+    draw.text((5, 5), txt[0:50])#, font = font, align ="left") 
+    draw.text((5, 15), txt[50:100])#, font = font, align ="left") 
+    draw.text((5, 25), txt[150:200])#, font = font, align ="left") 
+    draw.text((5, 35), txt[200:250])#, font = font, align ="left") 
 
     m_num += 1                                                                                                                                                                                                        
     w, h = imgs[0].size                                                                                                                                                                                                                       
@@ -82,9 +85,9 @@ def image_grid(imgs, rows=2, cols=3,txt=""):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"kk00___"+str(m_num)+"__"+randStr()
+    fn=m_dir+"ll00___"+str(m_num)+"__"+randStr()
     print(fn)
-    grid.save(fn+".jpg","jpeg") 
+    #grid.save(fn+".jpg","jpeg") 
     imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
     return grid     
 
@@ -145,7 +148,7 @@ def getProcess(pt01):
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=20,
+                   ddim_steps=25,
                    image_resolution=512,
                    detect_resolution=512,
                    scale=9,
