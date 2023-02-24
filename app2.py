@@ -74,7 +74,7 @@ def image_grid(imgs, rows=2, cols=3):
                                                                                                                                                                                                                                               
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))  
-    fn=m_dir+"i000___"+str(m_num)+"__"+randStr()
+    fn=m_dir+"jj00___"+str(m_num)+"__"+randStr()
     print(fn)
     grid.save(fn+".jpg","jpeg") 
     imgs[1].save(fn+"_a"+".png","png")                                                                                                                                                                                         
@@ -107,9 +107,9 @@ def getProcess():
     key06=["Award-winning photograph","professional photograph"]
     key07=["HDR","4K resolution","8k resolution"]
     key08=["HDR","4K resolution","8k resolution"]
-    key09=["strawberry hair","beach hair","blonde hair","straight hair"]
-    key10=["red","blue","green","black","gold","brown","sky"]
-    key11=["Caucasian","asian","hispanic","idian"]
+    key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
+    key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
+    key11=["Caucasian","asian","hispanic","idian","korean","sexy Caucasian","sexy korean","handsome korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
     pt01 = "sfw,(detailed skin),"
     pt01 +=random.choice(key01)+","
@@ -120,8 +120,8 @@ def getProcess():
     pt01+=random.choice(key06)+","
     pt01+=random.choice(key07)+","
     pt01+=random.choice(key08)+","
-    pt01+=random.choice(key09)+","
-    pt01+=random.choice(key10)+","
+    pt01+=random.choice(key10)+" "+random.choice(key09)+","
+    #pt01+=random.choice(key10)+","
     pt01+=random.choice(key11)+","
     pt01+=random.choice(key12)
     
@@ -137,7 +137,7 @@ def getProcess():
                    ddim_steps=20,
                    image_resolution=512,
                    detect_resolution=512,
-                   scale=7.5,
+                   scale=9,
                    seed=-1,
                    eta=0.0,
                    temp=0.0)
