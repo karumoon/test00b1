@@ -5,12 +5,29 @@ import pathlib
 import shlex
 import subprocess
 
-from PIL import Image, ImageFont, ImageDraw                                                                                                                                                                                                                          
+from PIL import Image, ImageFont, ImageDraw, ImageSequence                                                                                                                                                                                                                          
 import random
 import numpy as np
 import einops
 import math
 import torch
+
+ImageSequence
+
+
+im = Image.open("dance01.gif")
+
+global m_imArr
+m_imArr = []
+index = 1
+print((33,44)*(2))
+for frame in ImageSequence.Iterator(im):
+    m_imArr.append(frame.resize(frame.size*2))
+    #print(frame.size)
+    print(m_imArr[0].size)
+    #frame.save("frame%d.png" % index)
+    index += 1
+
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -91,8 +108,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"k00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"k01___"+str(m_num)+"__"+randss
+    fn=m_dir+"l00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"l01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
