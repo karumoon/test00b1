@@ -165,11 +165,7 @@ class DDIMSampler(object):
             
             #print("--")
             #print("karuSampling",index,ddim_use_original_steps,len(intermediates['x_inter']),"-----eee---")
-            if type(imgUser01) != None:
-              print("ddim_sampling imgUser01 not NONE")
-            else:
-              print("ddim_sampling imgUser01 NONE")
-              
+             
             outs = self.p_sample_ddim(img, cond, ts, index=index, use_original_steps=ddim_use_original_steps,
                                       quantize_denoised=quantize_denoised, temperature=temperature,
                                       noise_dropout=noise_dropout, score_corrector=score_corrector,
@@ -262,25 +258,25 @@ class DDIMSampler(object):
             noise = torch.nn.functional.dropout(noise, p=noise_dropout)
         x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
         #x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.99 + pred_x0 * 0.01
-        print("--")
+        #print("--")
         if type(imgUser01) != type(None):
-          print("p_sample_ddim imgUser01 okkkkkkkkkkkkkkk index=",index)
-          print(len(imgUser01))
-          print(" x_prev shape",x_prev.shape)
-          print(" imgUser01 shape",imgUser01.shape)
+          #print("p_sample_ddim imgUser01 okkkkkkkkkkkkkkk index=",index)
+          #print(len(imgUser01))
+          #print(" x_prev shape",x_prev.shape)
+          #print(" imgUser01 shape",imgUser01.shape)
           a1,a2,a3,a4=x_prev.shape
           b1,b2,b3,b4=imgUser01.shape
           imgUser01=imgUser01[0:a1,0:a2,0:a3,0:a4]
           if b4 is a4:
             print("b4 a4 same")
-          if index>10:
+          if index>30-10:
             x_prev = (x_prev * 0.98) + (imgUser01 * 0.02)
-        else:
-          print("p_sample_ddim none imgUser01 is False")
-        print("b=",b)
-        print("len x_prev ",len(x_prev))
-        print(" x_prev shape",x_prev.shape)
-        print(" x_prev size",x_prev.size)
+        #else:
+        #  print("p_sample_ddim none imgUser01 is False")
+        #print("b=",b)
+        #print("len x_prev ",len(x_prev))
+        #print(" x_prev shape",x_prev.shape)
+        #print(" x_prev size",x_prev.size)
         
         return x_prev, pred_x0
 
