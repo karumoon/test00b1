@@ -75,7 +75,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic019/"
+m_dir="/content/drive/MyDrive/aipic021/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -110,8 +110,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"BU00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"BU01___"+str(m_num)+"__"+randss
+    fn=m_dir+"CB00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"CB01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -146,7 +146,7 @@ def makeKeyword():
     key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["indian","african"]#"Caucasian","asian","hispanic","korean"]
-    key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
+    key12=["white dress"]#["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
     pt01 = "dancing,out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
     
@@ -176,8 +176,8 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
                    n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=512,
-                   detect_resolution=512,
+                   image_resolution=768,
+                   detect_resolution=768,
                    scale=10,
                    seed=seedNum,
                    eta=0.0,
