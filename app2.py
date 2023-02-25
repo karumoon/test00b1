@@ -23,10 +23,10 @@ index = 1
 print((33,44)*(2))
 for frame in ImageSequence.Iterator(im):
     w , h = frame.size
-    if index % 3 == 0 :
-      print(index,index/3,int(3.43242),math.floor(3.4234))
+    if index % 7 == 0 :
+      print(index,index/7,int(3.43242),math.floor(3.4234))
       m_imArr.append(frame.resize( ( w * 2, h * 2 )) )
-      print(m_imArr[int(index/3) - 1].size)
+      print(m_imArr[int(index/7) - 1].size)
       #frame.save("frame%d.png" % index)
     index += 1
 
@@ -75,7 +75,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic014/"
+m_dir="/content/drive/MyDrive/aipic017/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -110,8 +110,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"AN00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"AN01___"+str(m_num)+"__"+randss
+    fn=m_dir+"BB00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"BB01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -176,8 +176,8 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
                    n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=1024,
-                   detect_resolution=1024,
+                   image_resolution=768,
+                   detect_resolution=768,
                    scale=10,
                    seed=seedNum,
                    eta=0.0,
