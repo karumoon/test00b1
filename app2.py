@@ -75,7 +75,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic010/"
+m_dir="/content/drive/MyDrive/aipic012/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -110,8 +110,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"l00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"l01___"+str(m_num)+"__"+randss
+    fn=m_dir+"AH00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"AH01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -147,8 +147,10 @@ def makeKeyword():
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["indian","african"]#"Caucasian","asian","hispanic","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
-    pt01 = "out of focus trees in background,sfw,"#,(detailed skin),(detailed face),(detailed eyes),"
-    pt01 += random.choice(key01)+","
+    pt01 = "out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 += "soft lighting"+","
+    
+    #pt01 += random.choice(key01)+","
     pt01 += random.choice(key02)+","
     pt01 += random.choice(key03)+","
     pt01 += random.choice(key04)+","
@@ -178,7 +180,7 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=20,
+                   ddim_steps=30,
                    image_resolution=512,
                    detect_resolution=512,
                    scale=10,
@@ -197,16 +199,11 @@ def saveArrImg(rett,txt):
     result = [Image.fromarray(rett['r0'][0])]
     result += [Image.fromarray(rett['r0'][1])]
 
-    for i in range(len(rett['r1']['x_inter2'])):
-        result += [returnImage(rett['r1']['x_inter2'][i])]
-        result += [returnImage(rett['r1']['pred_x02'][i])]
+
+    #for i in range(len(rett['r1']['x_inter2'])):
+    #    result += [returnImage(rett['r1']['x_inter2'][i])]
+    #    result += [returnImage(rett['r1']['pred_x02'][i])]
     
-    """
-    for i in rett['r1']['x_inter2']:
-        result += [returnImage(i)]
-    for i in rett['r1']['pred_x02']:
-        result += [returnImage(i)]
-    """
     print("r size ",len(result))
     image_grid(result,math.ceil(len(result)/2),2,txt)
     return
@@ -219,9 +216,10 @@ def loopProcess():
         
         m_seedNum=random.randint(0,65535)
         print("seedNum",m_seedNum)
-        img2=Image.open("po001.PNG")
-        img2=np.asanyarray(img2)
-        img2 = torch.from_numpy(img2).float().to("cpu")
+        
+        #img2=Image.open("po001.PNG")
+        #img2=np.asanyarray(img2)
+        #img2 = torch.from_numpy(img2).float().to("cpu")
         
         rett=getProcess(pt01,seedNum=m_seedNum,img2=m_imArr[0],imgUser01=None)
         saveArrImg(rett,pt01)
