@@ -276,7 +276,8 @@ class DDIMSampler(object):
             #20 07 20-13 x_prev = (x_prev * 0.96) + (imgUser01 * 0.015)
             #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.017)
             #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.021)
-            x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
+            #x_prev = (x_prev * 0.94) + (imgUser01 * 0.03)
+            x_prev = a_prev.sqrt() * pred_x0 + ((dir_xt+imgUser01)*0.5) + noise
 
             
         #else:
