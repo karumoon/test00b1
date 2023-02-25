@@ -137,6 +137,10 @@ class DDIMSampler(object):
         else:
             img = x_T
 
+        ##################################################
+        #if type(imgUser01) != type(None):
+        #  img=imgUser01
+
         if timesteps is None:
             timesteps = self.ddpm_num_timesteps if ddim_use_original_steps else self.ddim_timesteps
         elif timesteps is not None and not ddim_use_original_steps:
@@ -173,12 +177,12 @@ class DDIMSampler(object):
                                       unconditional_guidance_scale=unconditional_guidance_scale,
                                       unconditional_conditioning=unconditional_conditioning,
                                       dynamic_threshold=dynamic_threshold,imgUser01=imgUser01)
-            img, pred_x0 , x_t , a_pre = outs
+            img, pred_x0 , model_output , model_t = outs
             if callback: callback(i)
             if img_callback: img_callback(pred_x0, i)
             
-            intermediates['x_inter2'].append(img)
-            intermediates['pred_x02'].append(pred_x0)
+            intermediates['x_inter2'].append(model_output)#(img)
+            intermediates['pred_x02'].append(model_t)#(pred_x0)
             
             if index % log_every_t == 0 or index == total_steps - 1:
                 intermediates['x_inter'].append(img)
@@ -269,7 +273,7 @@ class DDIMSampler(object):
           imgUser01=imgUser01[0:a1,0:a2,0:a3,0:a4]
           #if b4 is a4:
           #  print("b4 a4 same")
-          if index > (20-10) :
+          if index > (20-9) :
             #30 20 30-10 x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
             #20 17 30-13 x_prev = (x_prev * 0.97) + (imgUser01 * 0.016)
             #20 17 30-13 x_prev = (x_prev * 0.955) + (imgUser01 * 0.025)
@@ -278,8 +282,8 @@ class DDIMSampler(object):
             #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.021)
             #x_prev = (x_prev * 0.5) + (imgUser01 * a_prev.sqrt() *0.5)
             #x_prev = a_prev.sqrt() * pred_x0 + ((dir_xt+imgUser01)*0.5) + noise
-            x_prev = a_prev.sqrt() * (pred_x0*0.93 +(imgUser01*0.04)) + dir_xt + noise
-            x_prev = (x_prev * 0.96) + (imgUser01 * 0.03)
+            x_prev = a_prev.sqrt() * (pred_x0*0.94 +(imgUser01*0.03)) + dir_xt + noise
+            x_prev = (x_prev * 0.99) + (imgUser01 * 0.01)
 
             
         #else:
@@ -292,7 +296,17 @@ class DDIMSampler(object):
         #print("a_prev shape",a_prev.shape)
         #print("--")
         #print("a_prev.sqrt()",a_prev.sqrt())
-        return x_prev, pred_x0 , dir_xt , noise
+        #print("--")
+        #print("e_t shape",e_t.shape)
+        #print("model_t shape",model_t.shape)
+        #print("model_output shape",model_output.shape)
+        #print("model_uncond shape",model_uncond.shape)
+        
+        #model_output2 = self.model.predict_start_from_z_and_v(x, t, model_uncond)
+        #model_t2 = self.model.predict_start_from_z_and_v(x, t, model_t)
+        
+
+        return x_prev, pred_x0 , model_output , model_t
 
     @torch.no_grad()
     def encode(self, x0, c, t_enc, use_original_steps=False, return_intermediates=None,
