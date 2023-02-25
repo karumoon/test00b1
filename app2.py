@@ -23,10 +23,10 @@ index = 1
 print((33,44)*(2))
 for frame in ImageSequence.Iterator(im):
     w , h = frame.size
-    if index % 10 == 0 :
-      print(index,index/10,int(3.43242),math.floor(3.4234))
+    if index % 3 == 0 :
+      print(index,index/3,int(3.43242),math.floor(3.4234))
       m_imArr.append(frame.resize( ( w * 2, h * 2 )) )
-      print(m_imArr[int(index/10) - 1].size)
+      print(m_imArr[int(index/3) - 1].size)
       #frame.save("frame%d.png" % index)
     index += 1
 
@@ -75,7 +75,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic012/"
+m_dir="/content/drive/MyDrive/aipic014/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -110,8 +110,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"AH00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"AH01___"+str(m_num)+"__"+randss
+    fn=m_dir+"AN00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"AN01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
@@ -147,7 +147,7 @@ def makeKeyword():
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["indian","african"]#"Caucasian","asian","hispanic","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
-    pt01 = "out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 = "dancing,out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
     
     #pt01 += random.choice(key01)+","
@@ -170,19 +170,14 @@ def getProcess(pt01="",seedNum=-1,img2=False,imgUser01 = None):
     img=np.asanyarray(img2)
 
     nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
-    print(imgUser01)
-    if type(imgUser01) != None:
-      print("getProcess imgUser01 is not none")
-    else: 
-      print("getProcess imgUser01 is  none")
     rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=30,
-                   image_resolution=512,
-                   detect_resolution=512,
+                   ddim_steps=20,
+                   image_resolution=1024,
+                   detect_resolution=1024,
                    scale=10,
                    seed=seedNum,
                    eta=0.0,
@@ -223,7 +218,7 @@ def loopProcess():
         
         rett=getProcess(pt01,seedNum=m_seedNum,img2=m_imArr[0],imgUser01=None)
         saveArrImg(rett,pt01)
-        for i in range(1,10):
+        for i in range(1,len(m_imArr)-1):
           rett=getProcess(pt01,seedNum=m_seedNum,img2=m_imArr[i],imgUser01=getLastOfRett(rett))
           saveArrImg(rett,pt01)
         """
