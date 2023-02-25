@@ -269,7 +269,7 @@ class DDIMSampler(object):
           imgUser01=imgUser01[0:a1,0:a2,0:a3,0:a4]
           #if b4 is a4:
           #  print("b4 a4 same")
-          if index > (20-11) :
+          if index > (20-10) :
             #30 20 30-10 x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
             #20 17 30-13 x_prev = (x_prev * 0.97) + (imgUser01 * 0.016)
             #20 17 30-13 x_prev = (x_prev * 0.955) + (imgUser01 * 0.025)
@@ -278,8 +278,8 @@ class DDIMSampler(object):
             #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.021)
             #x_prev = (x_prev * 0.5) + (imgUser01 * a_prev.sqrt() *0.5)
             #x_prev = a_prev.sqrt() * pred_x0 + ((dir_xt+imgUser01)*0.5) + noise
-            x_prev = a_prev.sqrt() * (pred_x0*0.89 +(imgUser01*0.07)) + dir_xt + noise
-            #x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
+            x_prev = a_prev.sqrt() * (pred_x0*0.93 +(imgUser01*0.04)) + dir_xt + noise
+            x_prev = (x_prev * 0.96) + (imgUser01 * 0.03)
 
             
         #else:
