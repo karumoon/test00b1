@@ -173,7 +173,7 @@ class DDIMSampler(object):
                                       unconditional_guidance_scale=unconditional_guidance_scale,
                                       unconditional_conditioning=unconditional_conditioning,
                                       dynamic_threshold=dynamic_threshold,imgUser01=imgUser01)
-            img, pred_x0 = outs
+            img, pred_x0 , x_t , a_pre = outs
             if callback: callback(i)
             if img_callback: img_callback(pred_x0, i)
             
@@ -269,15 +269,17 @@ class DDIMSampler(object):
           imgUser01=imgUser01[0:a1,0:a2,0:a3,0:a4]
           #if b4 is a4:
           #  print("b4 a4 same")
-          if index > (20-10) :
+          if index > (20-11) :
             #30 20 30-10 x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
             #20 17 30-13 x_prev = (x_prev * 0.97) + (imgUser01 * 0.016)
             #20 17 30-13 x_prev = (x_prev * 0.955) + (imgUser01 * 0.025)
             #20 07 20-13 x_prev = (x_prev * 0.96) + (imgUser01 * 0.015)
             #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.017)
             #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.021)
-            #x_prev = (x_prev * 0.94) + (imgUser01 * 0.03)
-            x_prev = a_prev.sqrt() * pred_x0 + ((dir_xt+imgUser01)*0.5) + noise
+            #x_prev = (x_prev * 0.5) + (imgUser01 * a_prev.sqrt() *0.5)
+            #x_prev = a_prev.sqrt() * pred_x0 + ((dir_xt+imgUser01)*0.5) + noise
+            x_prev = a_prev.sqrt() * (pred_x0*0.89 +(imgUser01*0.07)) + dir_xt + noise
+            #x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
 
             
         #else:
@@ -286,8 +288,11 @@ class DDIMSampler(object):
         #print("len x_prev ",len(x_prev))
         #print(" x_prev shape",x_prev.shape)
         #print(" x_prev size",x_prev.size)
-        
-        return x_prev, pred_x0
+        #print("dir_xt shape",dir_xt.shape)
+        #print("a_prev shape",a_prev.shape)
+        #print("--")
+        #print("a_prev.sqrt()",a_prev.sqrt())
+        return x_prev, pred_x0 , dir_xt , noise
 
     @torch.no_grad()
     def encode(self, x0, c, t_enc, use_original_steps=False, return_intermediates=None,
