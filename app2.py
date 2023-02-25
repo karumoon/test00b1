@@ -75,7 +75,7 @@ ips = [
         ]
 """
 
-m_dir="/content/drive/MyDrive/aipic017/"
+m_dir="/content/drive/MyDrive/aipic019/"
 #m_dir="./"
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
@@ -110,8 +110,8 @@ def image_grid(imgs, rows=2, cols=3,txt2=""):
     for i, img in enumerate(imgs):                                                                                                                                                                                                            
         grid.paste(img, box=(i%cols*w, i//cols*h))
     randss=randStr()
-    fn=m_dir+"BC00___"+str(m_num)+"__"+randss
-    fn2=m_dir+"BC01___"+str(m_num)+"__"+randss
+    fn=m_dir+"BQ00___"+str(m_num)+"__"+randss
+    fn2=m_dir+"BQ01___"+str(m_num)+"__"+randss
     
     print(fn)
     grid.save(fn+".jpg","jpeg") 
