@@ -33,7 +33,7 @@ for frame in ImageSequence.Iterator(im):
       #frame.save("frame%d.png" % index)
     index += 1
 
-
+"""
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
         subprocess.run(shlex.split('patch -p1'), stdin=f, cwd='ControlNet')
@@ -54,7 +54,7 @@ for name in names:
     if out_path.exists():
         continue
     subprocess.run(shlex.split(command), cwd='ControlNet/annotator/ckpts/')
-
+"""
 
 MAX_IMAGES = 4
 ALLOW_CHANGING_BASE_MODEL = 'hysts/ControlNet-with-other-models'
@@ -65,3 +65,9 @@ from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
 global model
 
 model = Model()
+
+print(model)
+print(model.model)
+print(model.__dict__)
+
+
