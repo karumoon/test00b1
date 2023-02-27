@@ -950,8 +950,9 @@ def convert_full_checkpoint_r2(
     feature_extractor = AutoFeatureExtractor.from_pretrained(
         pretrained_model_name_or_path=DIR_to_SD_SAFETY_CHECKER
     )
-    print("pipe before")
-    !ps aux | grep python
+    #print("pipe before")
+    #!ps aux | grep python
+    """
     pipe = StableDiffusionPipeline(
         vae=vae,
         text_encoder=text_model,
@@ -961,6 +962,10 @@ def convert_full_checkpoint_r2(
         safety_checker=safety_checker,
         feature_extractor=feature_extractor,
     )
+    """
+    pipe={}
+    pipe.unet=uent
+    pipe.text_encoder=text_model
 
     #pipe.save_pretrained(output_path)
     return pipe
