@@ -64,10 +64,15 @@ from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
 
 global model
 
+print("dddddddddddddddddddd1")
 model = Model()
+
+print("dddddddddddddddddddd2")
 
 print(model)
 print(model.model)
 print(model.__dict__)
 
+
+print("dddddddddddddddddddd3")
 
