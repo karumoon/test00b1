@@ -71,8 +71,8 @@ def loadLora(fn,text_encoder,unet):
 
 def changeKeyForCLDM(state_dict):
   repData=[
-    ['down_blocks_0_attentions_0_','input_blocks_1_1_'],'],
-    ['down_blocks_0_attentions_1_','input_blocks_2_1_'],'],
+    ['down_blocks_0_attentions_0_','input_blocks_1_1_'],
+    ['down_blocks_0_attentions_1_','input_blocks_2_1_'],
     ['down_blocks_1_attentions_0_'  , 'input_blocks_4_1_'],
     ['down_blocks_1_attentions_1_'  , 'input_blocks_5_1_'],
     ['down_blocks_2_attentions_0_'  , 'input_blocks_7_1_'],
