@@ -146,7 +146,11 @@ print("dddddddddddddddddddd3")
 img=np.asanyarray(m_imArr[0])
 import random
 
+
+global m_dir
+global m_num
 m_dir="/content/drive/MyDrive/aipic0ad/"
+m_num=0
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
   arrS1.extend(["q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6"])
@@ -155,6 +159,8 @@ def randStr():
   return str
 
 def func001():
+  global m_num
+  m_num += 1
   while True:
     pt01="<lora:slavekiniv1.5:1><lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,girl,asdfasdfer sd04"
     pt01="<lora:slavekiniv1.5:1>manasdfasdfer sd05"
@@ -172,7 +178,7 @@ def func001():
                    seed=-1,
                    eta=0.0,
                    temp=0.0,imgUser01=None)
-    Image.fromarray(rett['r0'][1]).save(m_dir+"sd06.jpg","jpeg")
+    Image.fromarray(rett['r0'][1]).save(m_dir+"aaa_"+str(m_num)+".jpg","jpeg")
 
 func001()
 
