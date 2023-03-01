@@ -132,7 +132,9 @@ f.close()
 
 model.momel=model.model.to("cpu")
 print(model.model.cond_stage_model.transformer)
-loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.first_stage_model)
+#koreanDollLikeness_v10.safetensors
+#hipoly3DModelLora_v10.safetensors
+loadLora("/content/muu/koreanDollLikeness_v10.safetensors",model.model.cond_stage_model.transformer,model.model)
 
 #print(model.model.unet)
 
