@@ -134,7 +134,7 @@ model.momel=model.model.to("cpu")
 print(model.model.cond_stage_model.transformer)
 #koreanDollLikeness_v10.safetensors
 #hipoly3DModelLora_v10.safetensors
-loadLora("/content/muu/koreanDollLikeness_v10.safetensors",model.model.cond_stage_model.transformer,model.model)
+loadLora("/content/muu/koreanDollLikeness_v10.safetensors",model.model.cond_stage_model.transformer,model.model.diffusion_model)
 
 #print(model.model.unet)
 
