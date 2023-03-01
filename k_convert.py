@@ -870,7 +870,7 @@ def convert_full_checkpoint_r2(
 ):
 
     checkpoint = {}
-    fdevice = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    fdevice = "cuda:0" if torch.cuda.is_available() else "cpu"
     #checkpoint_path
     for checkpoint_path in checkpoint_pathlist:
       print(checkpoint_path)
