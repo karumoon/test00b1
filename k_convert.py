@@ -870,10 +870,11 @@ def convert_full_checkpoint_r2(
 ):
 
     checkpoint = {}
+    fdevice = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     #checkpoint_path
     for checkpoint_path in checkpoint_pathlist:
       print(checkpoint_path)
-      with safe_open(checkpoint_path, framework="pt", device=0) as f:
+      with safe_open(checkpoint_path, framework="pt", fdevice) as f:#device=0) as f:
         for k in f.keys():
             checkpoint[k] = f.get_tensor(k)
 
