@@ -64,9 +64,10 @@ up_blocks_3_attentions_2_  , output_blocks_11_1_
 
 
 """
-def loadLora(fn,text_encoder,unet):
+def loadLora(fn,text_encoder,unet,isCLDM = True):
   state_dict = load_file(fn)
-  state_dict = changeKeyForCLDM(state_dict)
+  if isCLDM:
+    state_dict = changeKeyForCLDM(state_dict)
   addWeightDict(state_dict,text_encoder,unet)
 
 def changeKeyForCLDM(state_dict):
@@ -94,7 +95,7 @@ def changeKeyForCLDM(state_dict):
     newkey=key
     for i in repData:
       if i[0] in key:
-        newkey=newkey.replace(i[0],i[1]))
+        newkey=newkey.replace(i[0],i[1])
     
     new_dict[newkey]=state_dict[key]
     #print("key ",key)
@@ -106,14 +107,14 @@ def addWeightDict(state_dict,text_encoder,unet):
 
   # directly update weight in diffusers model
   for key in state_dict:
-    print("key ",key)
+    #print("key ",key)
     # it is suggested to print out the key, it usually will be something like below
     # "lora_te_text_model_encoder_layers_0_self_attn_k_proj.lora_down.weight"
     if '.alpha' in key:
       alpha = state_dict[key]
       alpha /= 256 #/ 0.5 * 0.75 384
-      print("k",state_dict[key])
-      print("a",alpha)
+      #print("k",state_dict[key])
+      #print("a",alpha)
     # as we have set the alpha beforehand, so just skip
     if '.alpha' in key or key in visited:
         continue
@@ -124,15 +125,13 @@ def addWeightDict(state_dict,text_encoder,unet):
     else:
         layer_infos = key.split('.')[0].split(LORA_PREFIX_UNET+'_')[-1].split('_')
         curr_layer = unet#pipeline.unet
-    print("layer_infos ",layer_infos)
+    #print("layer_infos ",layer_infos)
     
     # find the target layer
     temp_name = layer_infos.pop(0)
-    if temp_name == "text":
-      print("text key ", temp_name)#state_dict[key])
     while len(layer_infos) > -1:
         try:
-            print("aaaa ",temp_name)
+            #print("aaaa ",temp_name)
             curr_layer = curr_layer.__getattr__(temp_name)
             if len(layer_infos) > 0:
                 temp_name = layer_infos.pop(0)
