@@ -20,11 +20,13 @@ sys.path.append('ControlNet')
 
 import config
 from annotator.canny import apply_canny
+"""
 from annotator.hed import apply_hed, nms
 from annotator.midas import apply_midas
 from annotator.mlsd import apply_mlsd
 from annotator.openpose import apply_openpose
 from annotator.uniformer import apply_uniformer
+"""
 from annotator.util import HWC3, resize_image
 from cldm.model import create_model, load_state_dict
 #from ldm.models.diffusion.ddim import DDIMSampler
