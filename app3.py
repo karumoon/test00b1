@@ -147,7 +147,7 @@ print("dddddddddddddddddddd3")
 img=np.asanyarray(m_imArr[0])
 pt01="<lora:slavekiniv1.5:1><lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,girl,asdfasdfer sd04"
 pt01="<lora:slavekiniv1.5:1>manasdfasdfer sd05"
-
+pt01="06,1girl, zelda \(the_legend_of_zelda\) wearing a slavekini, long hair, solo, crouching, best quality, masterpiece, highly detailed, intricate details, detailed face, detailed eyes, <lora:slavekiniv1.5:1>"
 nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
 rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
@@ -161,7 +161,7 @@ rett=model.process_pose_user(input_image=img,
                    seed=-1,
                    eta=0.0,
                    temp=0.0,imgUser01=None)
-Image.fromarray(rett['r0'][1]).save("sd05.jpg","jpeg")
+Image.fromarray(rett['r0'][1]).save("sd06.jpg","jpeg")
 
 
 """
