@@ -42,7 +42,13 @@ LORA_PREFIX_TEXT_ENCODER = 'lora_te'
 
 def loadLora(fn,text_encoder,unet):
   state_dict = load_file(fn)
+  printkeys(state_dict)
   addWeightDict(state_dict,text_encoder,unet)
+
+def printkeys(state_dict):
+  for key in state_dict:
+    print("key ",key)
+  return
 
 def addWeightDict(state_dict,text_encoder,unet):
   alpha = 0.75
