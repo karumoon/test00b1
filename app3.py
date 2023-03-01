@@ -12,8 +12,61 @@ import einops
 import math
 import torch
 
-import k_convert
+from k_convert import convert_full_checkpoint_r2
 
+print("convert_full_checkpoint_r2",convert_full_checkpoint_r2)
+
+
+
+safe_tensor_path="./clarity_19.safetensors"
+safe_tensor_path="/content/muu/xperoEnd1essModel_v1.safetensors"
+#safe_tensor_path="./3113fann1ng3.bin"
+#safe_tensor_pathlist=[safe_tensor_path,safe_tensor_path02]
+safe_tensor_pathlist=[safe_tensor_path]
+#safe_tensor_path = "/path/to/your-safe-tensor-model"
+# replace None with the path to your vae.pt file if you want to use customized vae weights instead of those saved in safetensors
+vae_pt_path = False
+HF_MODEL_DIR = "./ad"#"/path/to/save/hf/model"
+# noise scheduler you want to set as default
+scheduler_type = "EulerAncestral"#"DDIM"#"PNDM"  # K-LMS / DDIM / EulerAncestral / K-LMS
+# use the corresponding sd config file that your model is fine-tuned based on
+config_file = "./inference_config/v1-5-inference.yaml"
+extract_ema = False
+safe_tensor_path_unet="./koreanDollLikeness_v10.safetensors"
+
+"""
+m_unet01=convert_full_checkpoint_unet(
+    safe_tensor_path_unet,
+    config_file,
+    scheduler_type=scheduler_type,
+    extract_ema=extract_ema,
+    output_path=HF_MODEL_DIR,
+    vae_pt_path=vae_pt_path,
+)
+print(m_unet01)
+"""
+
+pipe=convert_full_checkpoint_r2(
+    safe_tensor_pathlist,
+    config_file,
+    scheduler_type=scheduler_type,
+    extract_ema=extract_ema,
+    output_path=HF_MODEL_DIR,
+    vae_pt_path=vae_pt_path,
+)
+print(pipe)
+print(pipe.unet)
+#pipe.unet.load_attn_procs(m_unet01)
+#!ps aux | grep python
+#pipe = pipe.to("cuda")     
+#!ps aux | grep python
+
+
+#print(pipe)
+#print(pipe.vae)
+#generator = torch.Generator("cuda").manual_seed(0)
+#image = pipe("girl,dress,djlksjdvoijsdoiisdf", generator=generator).images[0]                                                                                                                                                                                           
+#image 
 
 ImageSequence
 
