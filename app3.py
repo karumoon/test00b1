@@ -134,7 +134,10 @@ model.momel=model.model.to("cpu")
 #print(model.model.cond_stage_model.transformer)
 #koreanDollLikeness_v10.safetensors
 #hipoly3DModelLora_v10.safetensors
-loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model)
+#slavekiniAkaSlaveLeia_v15
+#loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model)
+
+loadLora("/content/muu/slavekiniAkaSlaveLeia_v15.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model)
 
 model.momel=model.model.to("cuda:0")
 #print(model.model.unet)
@@ -142,7 +145,9 @@ model.momel=model.model.to("cuda:0")
 print("dddddddddddddddddddd3")
 
 img=np.asanyarray(m_imArr[0])
-pt01="<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,girl,asdfasdfer sd02"
+pt01="<lora:slavekiniv1.5:1><lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,girl,asdfasdfer sd04"
+pt01="<lora:slavekiniv1.5:1>manasdfasdfer sd05"
+
 nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
 rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
@@ -150,13 +155,13 @@ rett=model.process_pose_user(input_image=img,
                    n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=512,
-                   detect_resolution=512,
+                   image_resolution=768,
+                   detect_resolution=768,
                    scale=10,
                    seed=-1,
                    eta=0.0,
                    temp=0.0,imgUser01=None)
-Image.fromarray(rett['r0'][1]).save("sd02.jpg","jpeg")
+Image.fromarray(rett['r0'][1]).save("sd05.jpg","jpeg")
 
 
 """
