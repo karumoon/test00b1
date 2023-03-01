@@ -16,9 +16,10 @@ from diffusers import DPMSolverMultistepScheduler
 # load diffusers model
 #model_id = "runwayml/stable-diffusion-v1-5"
 #pipeline = StableDiffusionPipeline.from_pretrained(model_id,torch_dtype=torch.float32)
-pipe=pipe.to("cpu")
-pipeline=pipe
-pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
+
+#pipe=pipe.to("cpu")
+#pipeline=pipe
+#pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
 
 # load lora weight
 model_path = "./koreanDollLikeness_v10.safetensors"
@@ -34,9 +35,13 @@ LORA_PREFIX_UNET = 'lora_unet'
 LORA_PREFIX_TEXT_ENCODER = 'lora_te'
 
 
-addWeightDict(state_dict,pipeline)
+#addWeightDict(state_dict,pipeline)
 
-def addWeightDict(state_dict,pipeline):
+def loadLora(fn,text_encoder,unet):
+  state_dict = load_file(fn)
+  addWeightDict(state_dict,text_encoder,unet)
+
+def addWeightDict(state_dict,text_encoder,unet):
   alpha = 0.75
   visited = []
 
@@ -56,10 +61,10 @@ def addWeightDict(state_dict,pipeline):
         
     if 'text' in key:
         layer_infos = key.split('.')[0].split(LORA_PREFIX_TEXT_ENCODER+'_')[-1].split('_')
-        curr_layer = pipeline.text_encoder
+        curr_layer = text_encoder#pipeline.text_encoder
     else:
         layer_infos = key.split('.')[0].split(LORA_PREFIX_UNET+'_')[-1].split('_')
-        curr_layer = pipeline.unet
+        curr_layer = unet#pipeline.unet
 
     # find the target layer
     temp_name = layer_infos.pop(0)
