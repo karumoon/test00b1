@@ -135,15 +135,19 @@ model.momel=model.model.to("cpu")
 #koreanDollLikeness_v10.safetensors
 #hipoly3DModelLora_v10.safetensors
 #slavekiniAkaSlaveLeia_v15
-loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model)
+#kakudateKarinBlueArchiveLora_v3.safetensors
 
-loadLora("/content/muu/slavekiniAkaSlaveLeia_v15.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model)
+loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
+#loadLora("/content/muu/slavekiniAkaSlaveLeia_v15.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
+
+loadLora("/content/muu/kakudateKarinBlueArchiveLora_v3.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
+
 
 model.momel=model.model.to("cuda:0")
 #print(model.model.unet)
 
 print("dddddddddddddddddddd3")
-img=np.asanyarray(m_imArr[0])
+
 import random
 
 
@@ -158,27 +162,71 @@ def randStr():
   str+=random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)+random.choice(arrS1)
   return str
 
-def func001():
-  global m_num
-  m_num += 1
-  while True:
-    pt01="<lora:slavekiniv1.5:1><lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,girl,asdfasdfer sd04"
-    pt01="<lora:slavekiniv1.5:1>manasdfasdfer sd05"
-    pt01=randStr()+",<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,sfw,1girl, zelda \(the_legend_of_zelda\) wearing a slavekini, long hair, solo, crouching, best quality, masterpiece, highly detailed, intricate details, detailed face, detailed eyes, <lora:slavekiniv1.5:1>"
-    nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
-    rett=model.process_pose_user(input_image=img,
+#def process_canny(self, input_image, prompt, a_prompt, n_prompt,
+#                      num_samples, image_resolution, ddim_steps, scale, seed,
+#                      eta, low_threshold, high_threshold):
+
+def iproc(img,pt01,nnpt01):
+      """
+      rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=1024,
-                   detect_resolution=1024,
-                   scale=10,
+                   image_resolution=768,
+                   detect_resolution=768,
+                   scale=8,
                    seed=-1,
                    eta=0.0,
-                   temp=0.0,imgUser01=None)
-    Image.fromarray(rett['r0'][1]).save(m_dir+"a____"+str(m_num)+".jpg","jpeg")
+                   temp=1.0,imgUser01=None)
+      ###
+      rett=model.process_hed(input_image=img,
+                   prompt=pt01,
+                   a_prompt="",
+                   n_prompt=nnpt01,
+                   num_samples=1,
+                   ddim_steps=20,
+                   image_resolution=768,
+                   detect_resolution=768,
+                   scale=8,
+                   seed=-1,
+                   eta=0.0)
+      """
+      rett=model.process_canny(input_image=img,
+                   prompt=pt01,
+                   a_prompt="",
+                   n_prompt=nnpt01,
+                   num_samples=1,
+                   ddim_steps=20,
+                   image_resolution=768,
+                   #
+                   scale=8,
+                   seed=-1,
+                   eta=0.0,
+                   low_threshold=100,
+                   high_threshold=200)
+      #"""
+      return rett
+    
+
+def func001():
+  global m_num
+  img=np.asanyarray(m_imArr[0])
+  #
+  while True:
+    m_num += 1
+    pt01="<lora:slavekiniv1.5:1><lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,girl,asdfasdfer sd04"
+    pt01="<lora:slavekiniv1.5:1>manasdfasdfer sd05"
+    pt01=randStr()+",<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,red slavekini,detailed slavekini,1girl, zelda \(the_legend_of_zelda\) wearing a slavekini, long hair, solo, crouching, best quality, masterpiece, highly detailed, intricate details, detailed face, detailed eyes, <lora:slavekiniv1.5:1>"
+    nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
+    pt01=randStr()+",<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,red slavekini,detailed slavekini,<lora:slavekiniv1.5:1>"
+    pt01=randStr()+",1girl,masterclass,best quality, black_dress, blue_bowtie, halo, karin_(blue_archive), looking_at_viewer, maid,white_gloves, maid_headdress, puffy_short_sleeves, solo,white_apron, white_pantyhose,maid_apron, pleated_dress, frilled_dress, <lora:Karin8V3_e6:1>,very long hair,sitting, outdoors,dark_skin"
+    rett=iproc(img,pt01,nnpt01)
+    fn="zzv____"+str(m_num)+".jpg"
+    print(fn)
+    #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
+    Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
 
 func001()
 
