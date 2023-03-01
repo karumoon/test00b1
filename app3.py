@@ -14,6 +14,9 @@ import torch
 
 from k_convert import convert_full_checkpoint_r2
 from karu_lora import loadLora
+
+
+"""
 print("convert_full_checkpoint_r2",convert_full_checkpoint_r2)
 
 #loadLora(fn,text_encoder,unet):
@@ -34,17 +37,8 @@ config_file = "./inference_config/v1-5-inference.yaml"
 extract_ema = False
 safe_tensor_path_unet="./koreanDollLikeness_v10.safetensors"
 
-"""
-m_unet01=convert_full_checkpoint_unet(
-    safe_tensor_path_unet,
-    config_file,
-    scheduler_type=scheduler_type,
-    extract_ema=extract_ema,
-    output_path=HF_MODEL_DIR,
-    vae_pt_path=vae_pt_path,
-)
-print(m_unet01)
-"""
+
+
 
 pipe=convert_full_checkpoint_r2(
     safe_tensor_pathlist,
@@ -57,12 +51,13 @@ pipe=convert_full_checkpoint_r2(
 
 loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",pipe.text_encoder,pipe.unet)
 
+
 print(pipe)
 f=open("sstlora1_dict.txt","w")
 print(pipe.unet.__dict__,file=f)
 f.close()
 
-
+"""
 #pipe.unet.load_attn_procs(m_unet01)
 #!ps aux | grep python
 #pipe = pipe.to("cuda")     
@@ -93,7 +88,7 @@ for frame in ImageSequence.Iterator(im):
       #frame.save("frame%d.png" % index)
     index += 1
 
-"""
+
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
         subprocess.run(shlex.split('patch -p1'), stdin=f, cwd='ControlNet')
@@ -114,7 +109,7 @@ for name in names:
     if out_path.exists():
         continue
     subprocess.run(shlex.split(command), cwd='ControlNet/annotator/ckpts/')
-"""
+
 
 MAX_IMAGES = 4
 ALLOW_CHANGING_BASE_MODEL = 'hysts/ControlNet-with-other-models'
@@ -125,30 +120,58 @@ from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
 global model
 
 print("dddddddddddddddddddd1")
-#model = Model()
+model = Model()
 
 print("dddddddddddddddddddd2")
 
-#print(model)
+f=open("stmm02.txt","w")
+print(model.__dict__,file=f)
+f.close()
 #print(model.model)
 #print(model.__dict__)
 
+model.momel=model.model.to("cpu")
+print(model.model.cond_stage_model.transformer)
+loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.first_stage_model)
+
+#print(model.model.unet)
 
 print("dddddddddddddddddddd3")
 
-generator = torch.Generator("cpu").manual_seed(-1)
+img=np.asanyarray(m_imArr[0])
+pt01="<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,girl,asdfasdfer sd02"
+nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
+rett=model.process_pose_user(input_image=img,
+                   prompt=pt01,
+                   a_prompt="",
+                   n_prompt=nnpt01,
+                   num_samples=1,
+                   ddim_steps=20,
+                   image_resolution=512,
+                   detect_resolution=512,
+                   scale=10,
+                   seed=-1,
+                   eta=0.0,
+                   temp=0.0,imgUser01=None)
+Image.fromarray(rett['r0'][1]).save("sd02.jpg","jpeg")
+
+
+"""
+pipe=pipe.to("cuda:0")
+generator = torch.Generator("cuda").manual_seed(-1)
 
 #image = pipe("girl,dress,djlksjdvoijsdoiisdf", generator=generator).images[0]                                                                                                                                                                                           
 #image 
 pipe.safety_checker = lambda images, clip_input: (images, False)
 
-images = pipe(prompt="hiqcgbody,girl, dress,asdocij", 
+images = pipe(prompt="hiqcgbody,girl,detailed face,asdocij c02", 
               negative_prompt="",
               generator=generator, 
-              num_inference_steps=15,
-              height=256, width=128,
+              num_inference_steps=20,
+              height=768, width=512,
               guidance_scale=8
   ).images 
 print(images)
-images[0].save("ssa01.jpg","jpeg")
+images[0].save("ssc02.jpg","jpeg")
 images[0]
+"""
