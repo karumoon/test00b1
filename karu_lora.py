@@ -89,7 +89,7 @@ def changeKeyForCLDM(state_dict):
     ['up_blocks_3_attentions_2_'  , 'output_blocks_11_1_']
   ]
 
-  new_dict=[]
+  new_dict={}
   for key in state_dict:
     newkey=key
     for i in repData:
