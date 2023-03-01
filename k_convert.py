@@ -1,5 +1,5 @@
 #%cd /content/safetensors-to-Diffusers
-
+#!git clone https://github.com/NormXU/safetensors-to-Diffusers
 # -*- coding:utf-8 -*-
 # email:xunuo@datagrand.com
 # create: @time: 1/4/23 11:21
