@@ -131,11 +131,12 @@ f.close()
 #print(model.__dict__)
 
 model.momel=model.model.to("cpu")
-print(model.model.cond_stage_model.transformer)
+#print(model.model.cond_stage_model.transformer)
 #koreanDollLikeness_v10.safetensors
 #hipoly3DModelLora_v10.safetensors
 loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model)
 
+model.momel=model.model.to("cuda:0")
 #print(model.model.unet)
 
 print("dddddddddddddddddddd3")
