@@ -22,14 +22,17 @@ from diffusers import DPMSolverMultistepScheduler
 #pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
 
 # load lora weight
-model_path = "./koreanDollLikeness_v10.safetensors"
+
+#model_path = "./koreanDollLikeness_v10.safetensors"
 #darkMagicianGirlLora_1.safetensors
 #model_path = "./darkMagicianGirlLora_1.safetensors"
 ##!wget https://huggingface.co/Karumoon/test00a1/resolve/main/
-model_path = "./hipoly3DModelLora_v10.safetensors"
+
+#model_path = "./hipoly3DModelLora_v10.safetensors"
 #model_path = "./slavekiniAkaSlaveLeia_v15.safetensors"
 #model_path="./wlopStyleLora_30Epochs.safetensors"
-state_dict = load_file(model_path)
+
+#state_dict = load_file(model_path)
 
 LORA_PREFIX_UNET = 'lora_unet'
 LORA_PREFIX_TEXT_ENCODER = 'lora_te'
@@ -47,7 +50,7 @@ def addWeightDict(state_dict,text_encoder,unet):
 
   # directly update weight in diffusers model
   for key in state_dict:
-    #print("key",key)
+    print("key ",key)
     # it is suggested to print out the key, it usually will be something like below
     # "lora_te_text_model_encoder_layers_0_self_attn_k_proj.lora_down.weight"
     if '.alpha' in key:
@@ -65,13 +68,15 @@ def addWeightDict(state_dict,text_encoder,unet):
     else:
         layer_infos = key.split('.')[0].split(LORA_PREFIX_UNET+'_')[-1].split('_')
         curr_layer = unet#pipeline.unet
-
+    print("layer_infos ",layer_infos)
+    
     # find the target layer
     temp_name = layer_infos.pop(0)
     if temp_name == "text":
-      print("text key ", state_dict[key])
+      print("text key ", temp_name)#state_dict[key])
     while len(layer_infos) > -1:
         try:
+            print("aaaa ",temp_name)
             curr_layer = curr_layer.__getattr__(temp_name)
             if len(layer_infos) > 0:
                 temp_name = layer_infos.pop(0)
@@ -113,7 +118,7 @@ def addWeightDict(state_dict,text_encoder,unet):
      # update visited list
     for item in pair_keys:
         visited.append(item)
-    return
+  return
   
 """  
 
