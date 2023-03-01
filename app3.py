@@ -13,10 +13,10 @@ import math
 import torch
 
 from k_convert import convert_full_checkpoint_r2
-
+from karu_lora import loadLora
 print("convert_full_checkpoint_r2",convert_full_checkpoint_r2)
 
-
+#loadLora(fn,text_encoder,unet):
 
 safe_tensor_path="./clarity_19.safetensors"
 safe_tensor_path="/content/muu/xperoEnd1essModel_v1.safetensors"
@@ -54,8 +54,15 @@ pipe=convert_full_checkpoint_r2(
     output_path=HF_MODEL_DIR,
     vae_pt_path=vae_pt_path,
 )
+
+loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",pipe.text_encoder,pipe.unet)
+
 print(pipe)
-print(pipe.unet)
+f=open("sstlora1_dict.txt","w")
+print(pipe.unet.__dict__,file=f)
+f.close()
+
+
 #pipe.unet.load_attn_procs(m_unet01)
 #!ps aux | grep python
 #pipe = pipe.to("cuda")     
@@ -118,14 +125,30 @@ from model import (DEFAULT_BASE_MODEL_FILENAME, DEFAULT_BASE_MODEL_REPO,
 global model
 
 print("dddddddddddddddddddd1")
-model = Model()
+#model = Model()
 
 print("dddddddddddddddddddd2")
 
-print(model)
-print(model.model)
-print(model.__dict__)
+#print(model)
+#print(model.model)
+#print(model.__dict__)
 
 
 print("dddddddddddddddddddd3")
 
+generator = torch.Generator("cpu").manual_seed(-1)
+
+#image = pipe("girl,dress,djlksjdvoijsdoiisdf", generator=generator).images[0]                                                                                                                                                                                           
+#image 
+pipe.safety_checker = lambda images, clip_input: (images, False)
+
+images = pipe(prompt="hiqcgbody,girl, dress,asdocij", 
+              negative_prompt="",
+              generator=generator, 
+              num_inference_steps=15,
+              height=256, width=128,
+              guidance_scale=8
+  ).images 
+print(images)
+images[0].save("ssa01.jpg","jpeg")
+images[0]
