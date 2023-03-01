@@ -39,7 +39,29 @@ LORA_PREFIX_TEXT_ENCODER = 'lora_te'
 
 
 #addWeightDict(state_dict,pipeline)
+"""
 
+down_blocks_0_attentions_0_  , input_blocks_1_1_
+down_blocks_0_attentions_1_  , input_blocks_2_1_
+down_blocks_1_attentions_0_  , input_blocks_4_1_
+down_blocks_1_attentions_1_  , input_blocks_5_1_
+down_blocks_2_attentions_0_  , input_blocks_7_1_
+down_blocks_2_attentions_1_  , input_blocks_8_1_
+
+mid_block_attentions_0_     ,  middle_block_1_
+
+up_blocks_1_attentions_0_  , output_blocks_3_1_
+up_blocks_1_attentions_1_  , output_blocks_4_1_
+up_blocks_1_attentions_2_  , output_blocks_5_1_
+up_blocks_2_attentions_0_  , output_blocks_6_1_
+up_blocks_2_attentions_1_  , output_blocks_7_1_
+up_blocks_2_attentions_2_  , output_blocks_8_1_
+up_blocks_3_attentions_0_  , output_blocks_9_1_
+up_blocks_3_attentions_1_  , output_blocks_10_1_
+up_blocks_3_attentions_2_  , output_blocks_11_1_
+
+
+"""
 def loadLora(fn,text_encoder,unet):
   state_dict = load_file(fn)
   printkeys(state_dict)
