@@ -153,7 +153,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0ae/"
+m_dir="/content/drive/MyDrive/aipic0af/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -181,9 +181,13 @@ def randStr():
 #def process_canny(self, input_image, prompt, a_prompt, n_prompt,
 #                      num_samples, image_resolution, ddim_steps, scale, seed,
 #                      eta, low_threshold, high_threshold):
+def getLastOfRett(rett,su=1):
+  ll=len(rett['r1']['pred_x02'])
+  return rett['r1']['pred_x02'][ll-su]
 
-def iproc(img,pt01,nnpt01,seed=-1):
-      """
+def iproc(img,pt01,nnpt01,seed=-1,rett=None):
+      print("iproc seed ",seed)
+      ###"""
       rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
@@ -192,15 +196,15 @@ def iproc(img,pt01,nnpt01,seed=-1):
                    ddim_steps=20,
                    image_resolution=768,
                    detect_resolution=768,
-                   scale=8,
-                   seed=-1,
+                   scale=10,
+                   seed=seed,
                    eta=0.0,
-                   temp=1.0,imgUser01=None)
+                   temp=0.0,imgUser01=rett)
       """
       #process_fake_scribble
       #process_hed
       #process_seg
-      rett=model.process_hed(input_image=img,
+      rett=model.process_seg(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
@@ -211,7 +215,7 @@ def iproc(img,pt01,nnpt01,seed=-1):
                    scale=10,
                    seed=seed,
                    eta=0.0)
-      """
+      ###
       rett=model.process_canny(input_image=img,
                    prompt=pt01,
                    a_prompt="",
@@ -240,8 +244,8 @@ def makeKeyword():
     key08=["ass focus","art style","pinup"]
     key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
-    key11=["indian","african"]#"Caucasian","asian","hispanic","korean"]
-    key12=["white dress"]#["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
+    key11=["indian","african","Caucasian","asian","hispanic","korean"]
+    key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
     pt01 = "dancing,out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
     
@@ -262,6 +266,7 @@ def makeKeyword():
 
 def func001():
   global m_num
+  global m_seedNum
   img=np.asanyarray(m_imArr[0])
   #
   while True:
@@ -276,17 +281,21 @@ def func001():
     pt01=makeKeyword()
     m_seedNum=random.randint(0,65535)
     print("seedNum",m_seedNum)
-
+    rett=None
     for i in range(len(m_imArr)):
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
-      rett=iproc(img,pt01,nnpt01,seed=m_seedNum)
-      fn="zzp_00____"+str(m_num)+".jpg"
-      fn2="zzp_01____"+str(m_num)+".jpg"
+      rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
+      fn="zzg_00____"+str(m_num)+".jpg"
+      fn2="zzg_01____"+str(m_num)+".jpg"
       print(fn)
+      #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
-      Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
-      Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
+      #Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
+      #Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
+      Image.fromarray(rett['r0'][0]).save(m_dir+fn2,"jpeg")
+      Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
+      rett=getLastOfRett(rett)
       
 func001()
 
