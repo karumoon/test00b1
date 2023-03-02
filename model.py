@@ -593,6 +593,9 @@ class Model:
         input_image = HWC3(input_image)
         detected_map, _ = apply_openpose(
             resize_image(input_image, detect_resolution))
+        
+      
+
         detected_map = HWC3(detected_map)
         img = resize_image(input_image, image_resolution)
         H, W, C = img.shape
@@ -659,14 +662,21 @@ class Model:
     @torch.inference_mode()
     def process_pose_user(self, input_image, prompt, a_prompt, n_prompt,
                      num_samples, image_resolution, detect_resolution,
-                     ddim_steps, scale, seed, eta,temp=0.0,imgUser01 = None):
+                     ddim_steps, scale, seed, eta,temp=0.0,imgUser01 = None,detectPass = False):
         
         
         self.load_weight('pose')
-
         input_image = HWC3(input_image)
-        detected_map, _ = apply_openpose(
+        
+        if detectPass:
+          detected_map, _ = apply_openpose(
             resize_image(input_image, detect_resolution))
+        else:
+          reszieImg=resize_image(input_image, detect_resolution)
+          reszieImg = reszieImg[:, :, ::-1].copy()
+          #reszieImg = np.zeros_like(reszieImg)
+          detected_map=reszieImg
+
         detected_map = HWC3(detected_map)
         img = resize_image(input_image, image_resolution)
         H, W, C = img.shape
