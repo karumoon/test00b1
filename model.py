@@ -850,7 +850,7 @@ class Model:
             verbose=False,
             eta=eta,
             unconditional_guidance_scale=scale,
-            unconditional_conditioning=un_cond
+            unconditional_conditioning=un_cond,
             temperature=temp,imgUser01=imgUser01)
 
         if config.save_memory:
