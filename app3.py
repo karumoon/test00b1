@@ -137,7 +137,7 @@ model.momel=model.model.to("cpu")
 #slavekiniAkaSlaveLeia_v15
 #kakudateKarinBlueArchiveLora_v3.safetensors
 
-loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
+#loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
 #loadLora("/content/muu/slavekiniAkaSlaveLeia_v15.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
 
 loadLora("/content/muu/kakudateKarinBlueArchiveLora_v3.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
@@ -153,7 +153,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0af/"
+m_dir="/content/drive/MyDrive/aipic0ag/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -188,14 +188,14 @@ def getLastOfRett(rett,su=1):
 def iproc(img,pt01,nnpt01,seed=-1,rett=None):
       print("iproc seed ",seed)
       ###"""
-      rett=model.process_pose_user(input_image=img,
+      rett=model.process_seg_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
-                   image_resolution=768,
-                   detect_resolution=768,
+                   image_resolution=512,
+                   detect_resolution=512,
                    scale=10,
                    seed=seed,
                    eta=0.0,
@@ -246,18 +246,23 @@ def makeKeyword():
     key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
     key11=["indian","african","Caucasian","asian","hispanic","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
-    pt01 = "dancing,out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
+    
+    pt01 = "<lora:Karin8V3_e6:1>,"#<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,very_long_hair,"
+    pt01 += "single color gray background,one color gray background, apron, black_dress, black_footwear, blue_bow, bow, bowtie, closed_mouth, dress, expressions, frilled_apron, frills, full_body, gloves, hair_between_eyes, halo, handle, high_heels, holding, karin_(blue_archive), looking_at_viewer, maid, maid_apron, maid_headdress, mx2j, official_art, pantyhose, puffy_short_sleeves, puffy_sleeves, ribbon, shoes, short_sleeves, solo, standing, transparent_background, waist_apron, white_apron, white_gloves, white_pantyhose, pleated_dress, blue_ribbon, blue_bowtie, frilled_dress, very_long_hair,"
+    pt01 += "1girl,masterclass,best quality,"
+    #out of focus trees in background
+    pt01 += "dancing,sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
     
     #pt01 += random.choice(key01)+","
     pt01 += random.choice(key02)+","
-    pt01 += random.choice(key03)+","
-    pt01 += random.choice(key04)+","
+    #pt01 += random.choice(key03)+","
+    #pt01 += random.choice(key04)+","
     pt01 += random.choice(key05)+","
-    pt01 += random.choice(key06)+","
-    pt01 += random.choice(key07)+","
+    #pt01 += random.choice(key06)+","
+    #pt01 += random.choice(key07)+","
     pt01 += random.choice(key08)+","
-    pt01 += random.choice(key10)+" "+random.choice(key09)+","
+    #pt01 += random.choice(key10)+" "+random.choice(key09)+","
     #pt01+= random.choice(key10)+","
     pt01 += random.choice(key11)+","
     pt01 += random.choice(key12)
@@ -286,8 +291,8 @@ def func001():
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
       rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
-      fn="zzg_00____"+str(m_num)+".jpg"
-      fn2="zzg_01____"+str(m_num)+".jpg"
+      fn="zyt_00____"+str(m_num)+".jpg"
+      fn2="zyt_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
