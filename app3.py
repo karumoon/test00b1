@@ -91,19 +91,6 @@ for frame in ImageSequence.Iterator(im):
 #2 6 9 10 11
 #                           pose-playful-004-ar3x2
 
-m_imArr[0]=Image.open("./pp/pose-playful-004-ar3x2.png")
-m_imArr[1]=Image.open("./pp/pose-playful-005-ar3x2.png")
-
-m_imArr[2]=Image.open("./pp/pose-playful-006-ar2x3.png")
-m_imArr[3]=Image.open("./pp/pose-playful-007-ar2x3.png")
-m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
-m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
-
-m_imArr[6]=Image.open("./pp/pose-playful-013-ar2x3.png")
-m_imArr[7]=Image.open("./pp/pose-playful-014-ar2x3.png")
-m_imArr[8]=Image.open("./pp/pose-playful-016-ar2x3.png")
-m_imArr[9]=Image.open("./pp/pose-playful-019-ar2x3.png")
-m_imArr[10]=Image.open("./pp/pose-playful-020-ar2x3.png")
 
 m_imArr[0]=Image.open("./pp/openpose_sample (30).png")
 m_imArr[1]=Image.open("./pp/openpose_sample (29).png")
@@ -135,6 +122,14 @@ m_imArr[29]=Image.open("./pp/openpose_sample (5).png")
 m_imArr[30]=Image.open("./pp/openpose_sample (4).png")
 m_imArr[31]=Image.open("./pp/openpose_sample (3).png")
 m_imArr[32]=Image.open("./pp/openpose_sample (2).png")
+
+
+
+m_imArr[2]=Image.open("./pp/pose-playful-006-ar2x3.png")
+m_imArr[3]=Image.open("./pp/pose-playful-007-ar2x3.png")
+m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
+m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
+
 
 print( "len len m_im ",len(m_imArr))
 #m_imArr[14]=Image.open("./pp/openpose_sample (11).png")
