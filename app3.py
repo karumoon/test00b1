@@ -88,6 +88,19 @@ for frame in ImageSequence.Iterator(im):
       #frame.save("frame%d.png" % index)
     index += 1
 
+#2 6 9 10 11
+#                           pose-playful-004-ar3x2
+m_imArr[0]=Image.open("./pp/pose-playful-004-ar3x2.png")
+m_imArr[1]=Image.open("./pp/pose-playful-005-ar3x2.png")
+m_imArr[2]=Image.open("./pp/pose-playful-006-ar2x3.png")
+m_imArr[3]=Image.open("./pp/pose-playful-007-ar2x3.png")
+m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
+m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
+m_imArr[6]=Image.open("./pp/pose-playful-013-ar2x3.png")
+m_imArr[7]=Image.open("./pp/pose-playful-014-ar2x3.png")
+m_imArr[8]=Image.open("./pp/pose-playful-016-ar2x3.png")
+m_imArr[9]=Image.open("./pp/pose-playful-019-ar2x3.png")
+m_imArr[10]=Image.open("./pp/pose-playful-020-ar2x3.png")
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -140,7 +153,7 @@ model.momel=model.model.to("cpu")
 #loadLora("/content/muu/hipoly3DModelLora_v10.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
 #loadLora("/content/muu/slavekiniAkaSlaveLeia_v15.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
 
-loadLora("/content/muu/kakudateKarinBlueArchiveLora_v3.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
+#loadLora("/content/muu/kakudateKarinBlueArchiveLora_v3.safetensors",model.model.cond_stage_model.transformer,model.model.model.diffusion_model,isCLDM=True)
 
 
 model.momel=model.model.to("cuda:0")
@@ -153,7 +166,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0ag/"
+m_dir="/content/drive/MyDrive/aipic0ah/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -168,6 +181,7 @@ def image_grid(imgs, rows=1, cols=2):
     print(fn)
     grid.save(fn,"jpeg")                                                                                                                                                                                          
     return grid     
+
 
 
 
@@ -187,7 +201,7 @@ def getLastOfRett(rett,su=1):
 
 def iproc(img,pt01,nnpt01,seed=-1,rett=None):
       print("iproc seed ",seed)
-      """
+      
       rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
@@ -199,23 +213,23 @@ def iproc(img,pt01,nnpt01,seed=-1,rett=None):
                    scale=7,
                    seed=seed,
                    eta=0.0,
-                   temp=1.0,imgUser01=rett)
+                   temp=1.0,imgUser01=rett,detectPass = False)
       """
       #process_fake_scribble
       #process_hed
       #process_seg
-      rett=model.process_seg(input_image=img,
+      rett=model.process_scribble(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
                    ddim_steps=20,
                    image_resolution=512,
-                   detect_resolution=512,
+                   #detect_resolution=512,
                    scale=8,
                    seed=seed,
                    eta=0.0)
-      """
+      
       rett=model.process_canny(input_image=img,
                    prompt=pt01,
                    a_prompt="",
@@ -247,12 +261,12 @@ def makeKeyword():
     key11=["indian","african","Caucasian","asian","hispanic","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
     
-    pt01 = "<lora:Karin8V3_e6:1>,anime,3 head body type,"#<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,very_long_hair,"
-    pt01 += "simple gray background,strong simple background, apron, black_dress, black_footwear, blue_bow, bow, bowtie, closed_mouth, dress, expressions, frilled_apron, frills, full_body, gloves, hair_between_eyes, halo, handle, high_heels, holding, karin_(blue_archive), looking_at_viewer, maid, maid_apron, maid_headdress, mx2j, official_art, pantyhose, puffy_short_sleeves, puffy_sleeves, ribbon, shoes, short_sleeves, solo, standing, transparent_background, waist_apron, white_apron, white_gloves, white_pantyhose, pleated_dress, blue_ribbon, blue_bowtie, frilled_dress, very_long_hair,"
-    """
-    pt01 += "1girl,masterclass,best quality,"
+    #pt01 = "<lora:Karin8V3_e6:1>,anime,3 head body type,"#<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,very_long_hair,"
+    #pt01 += "simple gray background,strong simple background, apron, black_dress, black_footwear, blue_bow, bow, bowtie, closed_mouth, dress, expressions, frilled_apron, frills, full_body, gloves, hair_between_eyes, halo, handle, high_heels, holding, karin_(blue_archive), looking_at_viewer, maid, maid_apron, maid_headdress, mx2j, official_art, pantyhose, puffy_short_sleeves, puffy_sleeves, ribbon, shoes, short_sleeves, solo, standing, transparent_background, waist_apron, white_apron, white_gloves, white_pantyhose, pleated_dress, blue_ribbon, blue_bowtie, frilled_dress, very_long_hair,"
+    
+    pt01 = "1girl,masterclass,best quality,"
     #out of focus trees in background
-    pt01 += "dancing,sfw,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 += "lay down,sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
     
     #pt01 += random.choice(key01)+","
@@ -263,11 +277,10 @@ def makeKeyword():
     #pt01 += random.choice(key06)+","
     #pt01 += random.choice(key07)+","
     pt01 += random.choice(key08)+","
-    #pt01 += random.choice(key10)+" "+random.choice(key09)+","
-    #pt01+= random.choice(key10)+","
+    pt01 += random.choice(key10)+" "+random.choice(key09)+","
     pt01 += random.choice(key11)+","
     pt01 += random.choice(key12)
-    """
+    
     pt01 += ","+randStr()
     return pt01
 
@@ -294,15 +307,15 @@ def func001():
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
       rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
-      fn="zyg_00____"+str(m_num)+".jpg"
-      fn2="zyg_01____"+str(m_num)+".jpg"
+      fn="zyb_00____"+str(m_num)+".jpg"
+      fn2="zyb_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
-      Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
-      Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
-      #Image.fromarray(rett['r0'][0]).save(m_dir+fn2,"jpeg")
-      #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
+      #Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
+      #Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
+      Image.fromarray(rett['r0'][0]).save(m_dir+fn2,"jpeg")
+      Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
       rett=None
       #rett=getLastOfRett(rett)
       
