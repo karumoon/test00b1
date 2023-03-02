@@ -90,17 +90,34 @@ for frame in ImageSequence.Iterator(im):
 
 #2 6 9 10 11
 #                           pose-playful-004-ar3x2
+
 m_imArr[0]=Image.open("./pp/pose-playful-004-ar3x2.png")
 m_imArr[1]=Image.open("./pp/pose-playful-005-ar3x2.png")
+
 m_imArr[2]=Image.open("./pp/pose-playful-006-ar2x3.png")
 m_imArr[3]=Image.open("./pp/pose-playful-007-ar2x3.png")
 m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
 m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
+
 m_imArr[6]=Image.open("./pp/pose-playful-013-ar2x3.png")
 m_imArr[7]=Image.open("./pp/pose-playful-014-ar2x3.png")
 m_imArr[8]=Image.open("./pp/pose-playful-016-ar2x3.png")
 m_imArr[9]=Image.open("./pp/pose-playful-019-ar2x3.png")
 m_imArr[10]=Image.open("./pp/pose-playful-020-ar2x3.png")
+
+m_imArr[0]=Image.open("./pp/openpose_sample (1).png")
+m_imArr[1]=Image.open("./pp/openpose_sample (2).png")
+m_imArr[6]=Image.open("./pp/openpose_sample (3).png")
+m_imArr[7]=Image.open("./pp/openpose_sample (4).png")
+m_imArr[8]=Image.open("./pp/openpose_sample (5).png")
+m_imArr[9]=Image.open("./pp/openpose_sample (6).png")
+m_imArr[10]=Image.open("./pp/openpose_sample (7).png")
+m_imArr[11]=Image.open("./pp/openpose_sample (8).png")
+m_imArr[12]=Image.open("./pp/openpose_sample (9).png")
+m_imArr[13]=Image.open("./pp/openpose_sample (10).png")
+#m_imArr[14]=Image.open("./pp/openpose_sample (11).png")
+
+
 
 if os.getenv('SYSTEM') == 'spaces':
     with open('patch') as f:
@@ -207,13 +224,13 @@ def iproc(img,pt01,nnpt01,seed=-1,rett=None):
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=30,
-                   image_resolution=768,
-                   detect_resolution=768,
+                   ddim_steps=22,
+                   image_resolution=512,
+                   detect_resolution=512,
                    scale=7,
                    seed=seed,
                    eta=0.0,
-                   temp=1.0,imgUser01=rett,detectPass = False)
+                   temp=1.0,imgUser01=rett,detectPass = True)
       """
       #process_fake_scribble
       #process_hed
@@ -266,7 +283,7 @@ def makeKeyword():
     
     pt01 = "1girl,masterclass,best quality,"
     #out of focus trees in background
-    pt01 += "lay down,sfw,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 += "sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
     
     #pt01 += random.choice(key01)+","
@@ -299,7 +316,7 @@ def func001():
     pt01=randStr()+",1girl,masterclass,best quality, black_dress, blue_bowtie, halo, karin_(blue_archive), looking_at_viewer, maid,white_gloves, maid_headdress, puffy_short_sleeves, solo,white_apron, white_pantyhose,maid_apron, pleated_dress, frilled_dress, <lora:Karin8V3_e6:1>,very long hair,sitting, outdoors,dark_skin"
     pt01="<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,<lora:Karin8V3_e6:1>,maid"
     pt01=makeKeyword()
-    nnpt01=""
+    nnpt01="bad anatomy,barefoot large breasts fake breasts (nude:1.3) bikini panties cleavage nsfw (photo photography photograph) (monochrome) (saturated) (bad hands) (disfigured) (grain) (Deformed) (poorly drawn) (mutilated) (lowres) (deformed) (dark) (lowpoly) (CG) (3d) (blurry) (out-of-focus) (depth_of_field) (man) (male) (boy) (guy) (duplicate) (watermark) (label) (signature) (text) (cropped)"
     m_seedNum=random.randint(0,65535)
     print("seedNum",m_seedNum)
     rett=None
@@ -307,8 +324,8 @@ def func001():
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
       rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
-      fn="zyb_00____"+str(m_num)+".jpg"
-      fn2="zyb_01____"+str(m_num)+".jpg"
+      fn="zxy_00____"+str(m_num)+".jpg"
+      fn2="zxy_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
