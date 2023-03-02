@@ -2,7 +2,6 @@
 This script shows a naive way, may be not so elegant, to load Lora (safetensors) weights in to diffusers model
 For the mechanism of Lora, please refer to https://github.com/cloneofsimo/lora
 Copyright 2023: Haofan Wang, Qixun Wang
-
 https://github.com/haofanwang/Lora-for-Diffusers/blob/main/convert_lora_safetensor_to_diffusers.py
 """
 
@@ -42,16 +41,13 @@ LORA_PREFIX_TEXT_ENCODER = 'lora_te'
 
 #addWeightDict(state_dict,pipeline)
 """
-
 down_blocks_0_attentions_0_  , input_blocks_1_1_
 down_blocks_0_attentions_1_  , input_blocks_2_1_
 down_blocks_1_attentions_0_  , input_blocks_4_1_
 down_blocks_1_attentions_1_  , input_blocks_5_1_
 down_blocks_2_attentions_0_  , input_blocks_7_1_
 down_blocks_2_attentions_1_  , input_blocks_8_1_
-
 mid_block_attentions_0_     ,  middle_block_1_
-
 up_blocks_1_attentions_0_  , output_blocks_3_1_
 up_blocks_1_attentions_1_  , output_blocks_4_1_
 up_blocks_1_attentions_2_  , output_blocks_5_1_
@@ -61,8 +57,6 @@ up_blocks_2_attentions_2_  , output_blocks_8_1_
 up_blocks_3_attentions_0_  , output_blocks_9_1_
 up_blocks_3_attentions_1_  , output_blocks_10_1_
 up_blocks_3_attentions_2_  , output_blocks_11_1_
-
-
 """
 def loadLora(fn,text_encoder,unet,isCLDM = True):
   state_dict = load_file(fn)
@@ -104,17 +98,17 @@ def changeKeyForCLDM(state_dict):
 def addWeightDict(state_dict,text_encoder,unet):
   alpha = 0.75
   visited = []
-
+  alpha = 0.1
   # directly update weight in diffusers model
   for key in state_dict:
     #print("key ",key)
     # it is suggested to print out the key, it usually will be something like below
     # "lora_te_text_model_encoder_layers_0_self_attn_k_proj.lora_down.weight"
     if '.alpha' in key:
-      alpha = state_dict[key]
-      alpha /= 256 #/ 0.5 * 0.75 384
+      #alpha = state_dict[key]
+      #alpha /= 256 #/ 0.5 * 0.75 384
       #print("k",state_dict[key])
-      #print("a",alpha)
+      print("a",alpha)
     # as we have set the alpha beforehand, so just skip
     if '.alpha' in key or key in visited:
         continue
@@ -176,18 +170,13 @@ def addWeightDict(state_dict,text_encoder,unet):
   return
   
 """  
-
 pipeline = pipeline.to(torch.float16).to("cuda")
 pipeline.safety_checker = lambda images, clip_input: (images, False)
-
 prompt = '1boy, wanostyle, monkey d luffy, smiling, straw hat, looking at viewer, solo, upper body, ((masterpiece)), (best quality), (extremely detailed), depth of field, sketch, dark intense shadows, sharp focus, soft lighting, hdr, colorful, good composition, fire all around, spectacular, <lora:wanostyle_2_offset:1>, closed shirt, anime screencap, scar under eye, ready to fight, black eyes'
 negative_prompt = '(painting by bad-artist-anime:0.9), (painting by bad-artist:0.9), watermark, text, error, blurry, jpeg artifacts, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, artist name, (worst quality, low quality:1.4), bad anatomy, watermark, signature, text, logo'
-
 prompt = ' best quality, ultra high res, (photorealistic:1.4), 1woman, sleeveless white button shirt, black skirt, black choker, ((glasses)), (Kpop idol), (aegyo sal:1), (platinum blonde grey hair:1), ((puffy eyes)), looking at viewer, full body, <lora:wlop:0.5>'
 negative_prompt = 'paintings, sketches, (worst quality:2), (low quality:2), (normal quality:2), lowres, normal quality, ((monochrome)), ((grayscale)), skin spots, acnes, skin blemishes, age spot, glans, nsfw, nipples'
-
 generator = torch.Generator("cuda").manual_seed(2356485121)
-
 with torch.no_grad():
     image = pipeline(prompt=prompt,
                      negative_prompt=negative_prompt,
@@ -197,7 +186,5 @@ with torch.no_grad():
                      guidance_scale=8,
                      generator=generator).images[0]
 #image = pipe("girl,dress,djlksjdvoijsdoiisdf", generator=generator).images[0]                                                                                                                                                                                           
-
-
 image.save("aa01.png".format(prompt[:5],alpha))
 """
