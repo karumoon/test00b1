@@ -153,7 +153,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0af/"
+m_dir="/content/drive/MyDrive/aipic0ag/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -187,19 +187,19 @@ def getLastOfRett(rett,su=1):
 
 def iproc(img,pt01,nnpt01,seed=-1,rett=None):
       print("iproc seed ",seed)
-      ###"""
-      rett=model.process_seg_user(input_image=img,
+      """
+      rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=20,
-                   image_resolution=512,
-                   detect_resolution=512,
-                   scale=10,
+                   ddim_steps=30,
+                   image_resolution=768,
+                   detect_resolution=768,
+                   scale=7,
                    seed=seed,
                    eta=0.0,
-                   temp=0.0,imgUser01=rett)
+                   temp=1.0,imgUser01=rett)
       """
       #process_fake_scribble
       #process_hed
@@ -209,13 +209,13 @@ def iproc(img,pt01,nnpt01,seed=-1,rett=None):
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=30,
+                   ddim_steps=20,
                    image_resolution=512,
                    detect_resolution=512,
-                   scale=10,
+                   scale=8,
                    seed=seed,
                    eta=0.0)
-      ###
+      """
       rett=model.process_canny(input_image=img,
                    prompt=pt01,
                    a_prompt="",
@@ -247,8 +247,9 @@ def makeKeyword():
     key11=["indian","african","Caucasian","asian","hispanic","korean"]
     key12=["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
     
-    pt01 = "<lora:Karin8V3_e6:1>,"#<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,very_long_hair,"
-    pt01 += "single color gray background,one color gray background, apron, black_dress, black_footwear, blue_bow, bow, bowtie, closed_mouth, dress, expressions, frilled_apron, frills, full_body, gloves, hair_between_eyes, halo, handle, high_heels, holding, karin_(blue_archive), looking_at_viewer, maid, maid_apron, maid_headdress, mx2j, official_art, pantyhose, puffy_short_sleeves, puffy_sleeves, ribbon, shoes, short_sleeves, solo, standing, transparent_background, waist_apron, white_apron, white_gloves, white_pantyhose, pleated_dress, blue_ribbon, blue_bowtie, frilled_dress, very_long_hair,"
+    pt01 = "<lora:Karin8V3_e6:1>,anime,3 head body type,"#<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,very_long_hair,"
+    pt01 += "simple gray background,strong simple background, apron, black_dress, black_footwear, blue_bow, bow, bowtie, closed_mouth, dress, expressions, frilled_apron, frills, full_body, gloves, hair_between_eyes, halo, handle, high_heels, holding, karin_(blue_archive), looking_at_viewer, maid, maid_apron, maid_headdress, mx2j, official_art, pantyhose, puffy_short_sleeves, puffy_sleeves, ribbon, shoes, short_sleeves, solo, standing, transparent_background, waist_apron, white_apron, white_gloves, white_pantyhose, pleated_dress, blue_ribbon, blue_bowtie, frilled_dress, very_long_hair,"
+    """
     pt01 += "1girl,masterclass,best quality,"
     #out of focus trees in background
     pt01 += "dancing,sfw,(detailed skin),(detailed face),(detailed eyes),"
@@ -266,6 +267,7 @@ def makeKeyword():
     #pt01+= random.choice(key10)+","
     pt01 += random.choice(key11)+","
     pt01 += random.choice(key12)
+    """
     pt01 += ","+randStr()
     return pt01
 
@@ -284,6 +286,7 @@ def func001():
     pt01=randStr()+",1girl,masterclass,best quality, black_dress, blue_bowtie, halo, karin_(blue_archive), looking_at_viewer, maid,white_gloves, maid_headdress, puffy_short_sleeves, solo,white_apron, white_pantyhose,maid_apron, pleated_dress, frilled_dress, <lora:Karin8V3_e6:1>,very long hair,sitting, outdoors,dark_skin"
     pt01="<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,<lora:Karin8V3_e6:1>,maid"
     pt01=makeKeyword()
+    nnpt01=""
     m_seedNum=random.randint(0,65535)
     print("seedNum",m_seedNum)
     rett=None
@@ -291,16 +294,17 @@ def func001():
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
       rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
-      fn="zyu_00____"+str(m_num)+".jpg"
-      fn2="zyu_01____"+str(m_num)+".jpg"
+      fn="zyg_00____"+str(m_num)+".jpg"
+      fn2="zyg_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
-      #Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
-      #Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
-      Image.fromarray(rett['r0'][0]).save(m_dir+fn2,"jpeg")
-      Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
-      rett=getLastOfRett(rett)
+      Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
+      Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
+      #Image.fromarray(rett['r0'][0]).save(m_dir+fn2,"jpeg")
+      #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
+      rett=None
+      #rett=getLastOfRett(rett)
       
 func001()
 
