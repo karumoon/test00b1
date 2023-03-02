@@ -153,7 +153,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0ag/"
+m_dir="/content/drive/MyDrive/aipic0af/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -291,8 +291,8 @@ def func001():
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
       rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
-      fn="zyt_00____"+str(m_num)+".jpg"
-      fn2="zyt_01____"+str(m_num)+".jpg"
+      fn="zyu_00____"+str(m_num)+".jpg"
+      fn2="zyu_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
