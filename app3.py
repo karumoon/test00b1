@@ -81,7 +81,7 @@ index = 1
 print((33,44)*(2))
 for frame in ImageSequence.Iterator(im):
     w , h = frame.size
-    if index % 7 == 0 :
+    if index % 3 == 0 :
       print(index,index/7,int(3.43242),math.floor(3.4234))
       m_imArr.append(frame.resize( ( w * 2, h * 2 )) )
       print(m_imArr[int(index/7) - 1].size)
@@ -105,16 +105,38 @@ m_imArr[8]=Image.open("./pp/pose-playful-016-ar2x3.png")
 m_imArr[9]=Image.open("./pp/pose-playful-019-ar2x3.png")
 m_imArr[10]=Image.open("./pp/pose-playful-020-ar2x3.png")
 
-m_imArr[0]=Image.open("./pp/openpose_sample (1).png")
-m_imArr[1]=Image.open("./pp/openpose_sample (2).png")
-m_imArr[6]=Image.open("./pp/openpose_sample (3).png")
-m_imArr[7]=Image.open("./pp/openpose_sample (4).png")
-m_imArr[8]=Image.open("./pp/openpose_sample (5).png")
-m_imArr[9]=Image.open("./pp/openpose_sample (6).png")
-m_imArr[10]=Image.open("./pp/openpose_sample (7).png")
-m_imArr[11]=Image.open("./pp/openpose_sample (8).png")
-m_imArr[12]=Image.open("./pp/openpose_sample (9).png")
-m_imArr[13]=Image.open("./pp/openpose_sample (10).png")
+m_imArr[0]=Image.open("./pp/openpose_sample (30).png")
+m_imArr[1]=Image.open("./pp/openpose_sample (29).png")
+m_imArr[6]=Image.open("./pp/openpose_sample (28).png")
+m_imArr[7]=Image.open("./pp/openpose_sample (27).png")
+m_imArr[8]=Image.open("./pp/openpose_sample (26).png")
+m_imArr[9]=Image.open("./pp/openpose_sample (25).png")
+m_imArr[10]=Image.open("./pp/openpose_sample (24).png")
+m_imArr[11]=Image.open("./pp/openpose_sample (23).png")
+m_imArr[12]=Image.open("./pp/openpose_sample (22).png")
+m_imArr[13]=Image.open("./pp/openpose_sample (21).png")
+
+m_imArr[14]=Image.open("./pp/openpose_sample (20).png")
+m_imArr[15]=Image.open("./pp/openpose_sample (19).png")
+m_imArr[16]=Image.open("./pp/openpose_sample (18).png")
+m_imArr[17]=Image.open("./pp/openpose_sample (17).png")
+m_imArr[18]=Image.open("./pp/openpose_sample (16).png")
+m_imArr[19]=Image.open("./pp/openpose_sample (15).png")
+m_imArr[20]=Image.open("./pp/openpose_sample (14).png")
+m_imArr[21]=Image.open("./pp/openpose_sample (13).png")
+m_imArr[22]=Image.open("./pp/openpose_sample (12).png")
+m_imArr[23]=Image.open("./pp/openpose_sample (11).png")
+m_imArr[24]=Image.open("./pp/openpose_sample (10).png")
+m_imArr[25]=Image.open("./pp/openpose_sample (9).png")
+m_imArr[26]=Image.open("./pp/openpose_sample (8).png")
+m_imArr[27]=Image.open("./pp/openpose_sample (7).png")
+m_imArr[28]=Image.open("./pp/openpose_sample (6).png")
+m_imArr[29]=Image.open("./pp/openpose_sample (5).png")
+m_imArr[30]=Image.open("./pp/openpose_sample (4).png")
+m_imArr[31]=Image.open("./pp/openpose_sample (3).png")
+m_imArr[32]=Image.open("./pp/openpose_sample (2).png")
+
+print( "len len m_im ",len(m_imArr))
 #m_imArr[14]=Image.open("./pp/openpose_sample (11).png")
 
 
@@ -216,7 +238,7 @@ def getLastOfRett(rett,su=1):
   ll=len(rett['r1']['pred_x02'])
   return rett['r1']['pred_x02'][ll-su]
 
-def iproc(img,pt01,nnpt01,seed=-1,rett=None):
+def iproc(img,pt01,nnpt01,seed=-1,rett=None,detectPass=True):
       print("iproc seed ",seed)
       
       rett=model.process_pose_user(input_image=img,
@@ -230,7 +252,7 @@ def iproc(img,pt01,nnpt01,seed=-1,rett=None):
                    scale=7,
                    seed=seed,
                    eta=0.0,
-                   temp=1.0,imgUser01=rett,detectPass = True)
+                   temp=1.0,imgUser01=rett,detectPass = detectPass)
       """
       #process_fake_scribble
       #process_hed
@@ -321,11 +343,14 @@ def func001():
     print("seedNum",m_seedNum)
     rett=None
     for i in range(len(m_imArr)):
+      detectPass=True
+      if i>=2 and i<=5 :
+        detectPass = False
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
-      rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett)
-      fn="zxy_00____"+str(m_num)+".jpg"
-      fn2="zxy_01____"+str(m_num)+".jpg"
+      rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett,detectPass = detectPass)
+      fn="zxw_00____"+str(m_num)+".jpg"
+      fn2="zxw_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
