@@ -153,7 +153,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0ad/"
+m_dir="/content/drive/MyDrive/aipic0ae/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -182,7 +182,7 @@ def randStr():
 #                      num_samples, image_resolution, ddim_steps, scale, seed,
 #                      eta, low_threshold, high_threshold):
 
-def iproc(img,pt01,nnpt01):
+def iproc(img,pt01,nnpt01,seed=-1):
       """
       rett=model.process_pose_user(input_image=img,
                    prompt=pt01,
@@ -197,7 +197,10 @@ def iproc(img,pt01,nnpt01):
                    eta=0.0,
                    temp=1.0,imgUser01=None)
       """
-      rett=model.process_seg(input_image=img,
+      #process_fake_scribble
+      #process_hed
+      #process_seg
+      rett=model.process_hed(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
@@ -205,8 +208,8 @@ def iproc(img,pt01,nnpt01):
                    ddim_steps=30,
                    image_resolution=512,
                    detect_resolution=512,
-                   scale=8,
-                   seed=-1,
+                   scale=10,
+                   seed=seed,
                    eta=0.0)
       """
       rett=model.process_canny(input_image=img,
@@ -271,12 +274,15 @@ def func001():
     pt01=randStr()+",1girl,masterclass,best quality, black_dress, blue_bowtie, halo, karin_(blue_archive), looking_at_viewer, maid,white_gloves, maid_headdress, puffy_short_sleeves, solo,white_apron, white_pantyhose,maid_apron, pleated_dress, frilled_dress, <lora:Karin8V3_e6:1>,very long hair,sitting, outdoors,dark_skin"
     pt01="<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,<lora:Karin8V3_e6:1>,maid"
     pt01=makeKeyword()
+    m_seedNum=random.randint(0,65535)
+    print("seedNum",m_seedNum)
+
     for i in range(len(m_imArr)):
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
-      rett=iproc(img,pt01,nnpt01)
-      fn="zzr_00____"+str(m_num)+".jpg"
-      fn2="zzr_01____"+str(m_num)+".jpg"
+      rett=iproc(img,pt01,nnpt01,seed=m_seedNum)
+      fn="zzp_00____"+str(m_num)+".jpg"
+      fn2="zzp_01____"+str(m_num)+".jpg"
       print(fn)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
       Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
