@@ -98,7 +98,7 @@ def changeKeyForCLDM(state_dict):
 def addWeightDict(state_dict,text_encoder,unet):
   alpha = 0.75
   visited = []
-  alpha = 0.1
+  alpha=0.15
   # directly update weight in diffusers model
   for key in state_dict:
     #print("key ",key)
