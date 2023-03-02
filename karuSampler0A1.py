@@ -1,394 +1,203 @@
-"""SAMPLING ONLY."""
+"""
+This script shows a naive way, may be not so elegant, to load Lora (safetensors) weights in to diffusers model
+For the mechanism of Lora, please refer to https://github.com/cloneofsimo/lora
+Copyright 2023: Haofan Wang, Qixun Wang
 
-from ctypes import LittleEndianStructure
+https://github.com/haofanwang/Lora-for-Diffusers/blob/main/convert_lora_safetensor_to_diffusers.py
+"""
+
 import torch
-import numpy as np
-from tqdm import tqdm
+from safetensors.torch import load_file
+from diffusers import StableDiffusionPipeline
+from diffusers import DPMSolverMultistepScheduler
 
-from ldm.modules.diffusionmodules.util import make_ddim_sampling_parameters, make_ddim_timesteps, noise_like, extract_into_tensor
+import copy
+
+#  def loadSafetensorLora(fileName):
+
+# load diffusers model
+#model_id = "runwayml/stable-diffusion-v1-5"
+#pipeline = StableDiffusionPipeline.from_pretrained(model_id,torch_dtype=torch.float32)
+
+#pipe=pipe.to("cpu")
+#pipeline=pipe
+#pipeline.scheduler = DPMSolverMultistepScheduler.from_config(pipeline.scheduler.config)
+
+# load lora weight
+
+#model_path = "./koreanDollLikeness_v10.safetensors"
+#darkMagicianGirlLora_1.safetensors
+#model_path = "./darkMagicianGirlLora_1.safetensors"
+##!wget https://huggingface.co/Karumoon/test00a1/resolve/main/
+
+#model_path = "./hipoly3DModelLora_v10.safetensors"
+#model_path = "./slavekiniAkaSlaveLeia_v15.safetensors"
+#model_path="./wlopStyleLora_30Epochs.safetensors"
+
+#state_dict = load_file(model_path)
+
+LORA_PREFIX_UNET = 'lora_unet'
+LORA_PREFIX_TEXT_ENCODER = 'lora_te'
 
 
-class DDIMSampler(object):
-    def __init__(self, model, schedule="linear", **kwargs):
-        super().__init__()
-        self.model = model
-        self.ddpm_num_timesteps = model.num_timesteps
-        self.schedule = schedule
+#addWeightDict(state_dict,pipeline)
+"""
 
-    def register_buffer(self, name, attr):
-        if type(attr) == torch.Tensor:
-            if attr.device != torch.device("cuda"):
-                attr = attr.to(torch.device("cuda"))
-        setattr(self, name, attr)
+down_blocks_0_attentions_0_  , input_blocks_1_1_
+down_blocks_0_attentions_1_  , input_blocks_2_1_
+down_blocks_1_attentions_0_  , input_blocks_4_1_
+down_blocks_1_attentions_1_  , input_blocks_5_1_
+down_blocks_2_attentions_0_  , input_blocks_7_1_
+down_blocks_2_attentions_1_  , input_blocks_8_1_
 
-    def make_schedule(self, ddim_num_steps, ddim_discretize="uniform", ddim_eta=0., verbose=True):
-        self.ddim_timesteps = make_ddim_timesteps(ddim_discr_method=ddim_discretize, num_ddim_timesteps=ddim_num_steps,
-                                                  num_ddpm_timesteps=self.ddpm_num_timesteps,verbose=verbose)
-        alphas_cumprod = self.model.alphas_cumprod
-        assert alphas_cumprod.shape[0] == self.ddpm_num_timesteps, 'alphas have to be defined for each timestep'
-        to_torch = lambda x: x.clone().detach().to(torch.float32).to(self.model.device)
+mid_block_attentions_0_     ,  middle_block_1_
 
-        self.register_buffer('betas', to_torch(self.model.betas))
-        self.register_buffer('alphas_cumprod', to_torch(alphas_cumprod))
-        self.register_buffer('alphas_cumprod_prev', to_torch(self.model.alphas_cumprod_prev))
+up_blocks_1_attentions_0_  , output_blocks_3_1_
+up_blocks_1_attentions_1_  , output_blocks_4_1_
+up_blocks_1_attentions_2_  , output_blocks_5_1_
+up_blocks_2_attentions_0_  , output_blocks_6_1_
+up_blocks_2_attentions_1_  , output_blocks_7_1_
+up_blocks_2_attentions_2_  , output_blocks_8_1_
+up_blocks_3_attentions_0_  , output_blocks_9_1_
+up_blocks_3_attentions_1_  , output_blocks_10_1_
+up_blocks_3_attentions_2_  , output_blocks_11_1_
 
-        # calculations for diffusion q(x_t | x_{t-1}) and others
-        self.register_buffer('sqrt_alphas_cumprod', to_torch(np.sqrt(alphas_cumprod.cpu())))
-        self.register_buffer('sqrt_one_minus_alphas_cumprod', to_torch(np.sqrt(1. - alphas_cumprod.cpu())))
-        self.register_buffer('log_one_minus_alphas_cumprod', to_torch(np.log(1. - alphas_cumprod.cpu())))
-        self.register_buffer('sqrt_recip_alphas_cumprod', to_torch(np.sqrt(1. / alphas_cumprod.cpu())))
-        self.register_buffer('sqrt_recipm1_alphas_cumprod', to_torch(np.sqrt(1. / alphas_cumprod.cpu() - 1)))
 
-        # ddim sampling parameters
-        ddim_sigmas, ddim_alphas, ddim_alphas_prev = make_ddim_sampling_parameters(alphacums=alphas_cumprod.cpu(),
-                                                                                   ddim_timesteps=self.ddim_timesteps,
-                                                                                   eta=ddim_eta,verbose=verbose)
-        self.register_buffer('ddim_sigmas', ddim_sigmas)
-        self.register_buffer('ddim_alphas', ddim_alphas)
-        self.register_buffer('ddim_alphas_prev', ddim_alphas_prev)
-        self.register_buffer('ddim_sqrt_one_minus_alphas', np.sqrt(1. - ddim_alphas))
-        sigmas_for_original_sampling_steps = ddim_eta * torch.sqrt(
-            (1 - self.alphas_cumprod_prev) / (1 - self.alphas_cumprod) * (
-                        1 - self.alphas_cumprod / self.alphas_cumprod_prev))
-        self.register_buffer('ddim_sigmas_for_original_num_steps', sigmas_for_original_sampling_steps)
+"""
+def loadLora(fn,text_encoder,unet,isCLDM = True):
+  state_dict = load_file(fn)
+  if isCLDM:
+    state_dict = changeKeyForCLDM(state_dict)
+  addWeightDict(state_dict,text_encoder,unet)
 
-    @torch.no_grad()
-    def sample(self,
-               S,
-               batch_size,
-               shape,
-               conditioning=None,
-               callback=None,
-               normals_sequence=None,
-               img_callback=None,
-               quantize_x0=False,
-               eta=0.,
-               mask=None,
-               x0=None,
-               temperature=1.,
-               noise_dropout=0.,
-               score_corrector=None,
-               corrector_kwargs=None,
-               verbose=True,
-               x_T=None,
-               log_every_t=100,
-               unconditional_guidance_scale=1.,
-               unconditional_conditioning=None, # this has to come in the same format as the conditioning, # e.g. as encoded tokens, ...
-               dynamic_threshold=None,
-               ucg_schedule=None,
-               imgUser01=None,
-               **kwargs
-               ):
-        if conditioning is not None:
-            if isinstance(conditioning, dict):
-                ctmp = conditioning[list(conditioning.keys())[0]]
-                while isinstance(ctmp, list): ctmp = ctmp[0]
-                cbs = ctmp.shape[0]
-                if cbs != batch_size:
-                    print(f"Warning: Got {cbs} conditionings but batch-size is {batch_size}")
+def changeKeyForCLDM(state_dict):
+  repData=[
+    ['down_blocks_0_attentions_0_','input_blocks_1_1_'],
+    ['down_blocks_0_attentions_1_','input_blocks_2_1_'],
+    ['down_blocks_1_attentions_0_'  , 'input_blocks_4_1_'],
+    ['down_blocks_1_attentions_1_'  , 'input_blocks_5_1_'],
+    ['down_blocks_2_attentions_0_'  , 'input_blocks_7_1_'],
+    ['down_blocks_2_attentions_1_'  , 'input_blocks_8_1_'],
+    ['mid_block_attentions_0_'     ,  'middle_block_1_'],
+    ['up_blocks_1_attentions_0_'  , 'output_blocks_3_1_'],
+    ['up_blocks_1_attentions_1_'  , 'output_blocks_4_1_'],
+    ['up_blocks_1_attentions_2_'  , 'output_blocks_5_1_'],
+    ['up_blocks_2_attentions_0_'  , 'output_blocks_6_1_'],
+    ['up_blocks_2_attentions_1_'  , 'output_blocks_7_1_'],
+    ['up_blocks_2_attentions_2_'  , 'output_blocks_8_1_'],
+    ['up_blocks_3_attentions_0_'  , 'output_blocks_9_1_'],
+    ['up_blocks_3_attentions_1_'  , 'output_blocks_10_1_'],
+    ['up_blocks_3_attentions_2_'  , 'output_blocks_11_1_']
+  ]
 
-            elif isinstance(conditioning, list):
-                for ctmp in conditioning:
-                    if ctmp.shape[0] != batch_size:
-                        print(f"Warning: Got {cbs} conditionings but batch-size is {batch_size}")
+  new_dict={}
+  for key in state_dict:
+    newkey=key
+    for i in repData:
+      if i[0] in key:
+        newkey=newkey.replace(i[0],i[1])
+    
+    new_dict[newkey]=state_dict[key]
+    #print("key ",key)
+  return new_dict
 
-            else:
-                if conditioning.shape[0] != batch_size:
-                    print(f"Warning: Got {conditioning.shape[0]} conditionings but batch-size is {batch_size}")
-
-        self.make_schedule(ddim_num_steps=S, ddim_eta=eta, verbose=verbose)
-        # sampling
-        C, H, W = shape
-        size = (batch_size, C, H, W)
-        print(f'Data shape for DDIM sampling is {size}, eta {eta}')
-
-        samples, intermediates = self.ddim_sampling(conditioning, size,
-                                                    callback=callback,
-                                                    img_callback=img_callback,
-                                                    quantize_denoised=quantize_x0,
-                                                    mask=mask, x0=x0,
-                                                    ddim_use_original_steps=False,
-                                                    noise_dropout=noise_dropout,
-                                                    temperature=temperature,
-                                                    score_corrector=score_corrector,
-                                                    corrector_kwargs=corrector_kwargs,
-                                                    x_T=x_T,
-                                                    log_every_t=log_every_t,
-                                                    unconditional_guidance_scale=unconditional_guidance_scale,
-                                                    unconditional_conditioning=unconditional_conditioning,
-                                                    dynamic_threshold=dynamic_threshold,
-                                                    ucg_schedule=ucg_schedule,
-                                                    imgUser01 = imgUser01
-                                                    )
-        return samples, intermediates
-
-    @torch.no_grad()
-    def ddim_sampling(self, cond, shape,
-                      x_T=None, ddim_use_original_steps=False,
-                      callback=None, timesteps=None, quantize_denoised=True,
-                      mask=None, x0=None, img_callback=None, log_every_t=100,
-                      temperature=0.1, noise_dropout=0., score_corrector=None, corrector_kwargs=None,
-                      unconditional_guidance_scale=1., unconditional_conditioning=None, dynamic_threshold=None,
-                      ucg_schedule=None,imgUser01=None):
-        device = self.model.betas.device
-        b = shape[0]
-        if x_T is None:
-            img = torch.randn(shape, device=device)
-        else:
-            img = x_T
-
-        ##################################################
-        #if type(imgUser01) != type(None):
-        #  img=imgUser01
-
-        if timesteps is None:
-            timesteps = self.ddpm_num_timesteps if ddim_use_original_steps else self.ddim_timesteps
-        elif timesteps is not None and not ddim_use_original_steps:
-            subset_end = int(min(timesteps / self.ddim_timesteps.shape[0], 1) * self.ddim_timesteps.shape[0]) - 1
-            timesteps = self.ddim_timesteps[:subset_end]
-
-        intermediates = {'x_inter': [img], 'pred_x0': [img],'x_inter2':[img],'pred_x02': [img]}
-        time_range = reversed(range(0,timesteps)) if ddim_use_original_steps else np.flip(timesteps)
-        total_steps = timesteps if ddim_use_original_steps else timesteps.shape[0]
-        print(f"Running DDIM Sampling with {total_steps} timesteps")
-
-        iterator = tqdm(time_range, desc='DDIM Sampler', total=total_steps)
-
-        for i, step in enumerate(iterator):
-            index = total_steps - i - 1
-            ts = torch.full((b,), step, device=device, dtype=torch.long)
-
-            if mask is not None:
-                assert x0 is not None
-                img_orig = self.model.q_sample(x0, ts)  # TODO: deterministic forward pass?
-                img = img_orig * mask + (1. - mask) * img
-
-            if ucg_schedule is not None:
-                assert len(ucg_schedule) == len(time_range)
-                unconditional_guidance_scale = ucg_schedule[i]
-            
-            #print("--")
-            #print("karuSampling",index,ddim_use_original_steps,len(intermediates['x_inter']),"-----eee---")
-             
-            outs = self.p_sample_ddim(img, cond, ts, index=index, use_original_steps=ddim_use_original_steps,
-                                      quantize_denoised=quantize_denoised, temperature=temperature,
-                                      noise_dropout=noise_dropout, score_corrector=score_corrector,
-                                      corrector_kwargs=corrector_kwargs,
-                                      unconditional_guidance_scale=unconditional_guidance_scale,
-                                      unconditional_conditioning=unconditional_conditioning,
-                                      dynamic_threshold=dynamic_threshold,imgUser01=imgUser01)
-            img, pred_x0 , model_output , model_t = outs
-            if callback: callback(i)
-            if img_callback: img_callback(pred_x0, i)
-            
-            intermediates['x_inter2'].append(model_output)#(img)
-            intermediates['pred_x02'].append(model_t)#(pred_x0)
-            
-            if index % log_every_t == 0 or index == total_steps - 1:
-                intermediates['x_inter'].append(img)
-                intermediates['pred_x0'].append(pred_x0)
-
-        return img, intermediates
-
-    @torch.no_grad()
-    def p_sample_ddim(self, x, c, t, index, repeat_noise=False, use_original_steps=False, quantize_denoised=False,
-                      temperature=1., noise_dropout=0., score_corrector=None, corrector_kwargs=None,
-                      unconditional_guidance_scale=1., unconditional_conditioning=None,
-                      dynamic_threshold=None,imgUser01=None):
-        b, *_, device = *x.shape, x.device
-
-        if unconditional_conditioning is None or unconditional_guidance_scale == 1.:
-            model_output = self.model.apply_model(x, t, c)
-        else:
-            x_in = torch.cat([x] * 2)
-            t_in = torch.cat([t] * 2)
-            if isinstance(c, dict):
-                assert isinstance(unconditional_conditioning, dict)
-                c_in = dict()
-                for k in c:
-                    if isinstance(c[k], list):
-                        c_in[k] = [torch.cat([
-                            unconditional_conditioning[k][i],
-                            c[k][i]]) for i in range(len(c[k]))]
-                    else:
-                        c_in[k] = torch.cat([
-                                unconditional_conditioning[k],
-                                c[k]])
-            elif isinstance(c, list):
-                c_in = list()
-                assert isinstance(unconditional_conditioning, list)
-                for i in range(len(c)):
-                    c_in.append(torch.cat([unconditional_conditioning[i], c[i]]))
-            else:
-                c_in = torch.cat([unconditional_conditioning, c])
-            model_uncond, model_t = self.model.apply_model(x_in, t_in, c_in).chunk(2)
-            model_output = model_uncond + unconditional_guidance_scale * (model_t - model_uncond)
-
-        if self.model.parameterization == "v":
-            e_t = self.model.predict_eps_from_z_and_v(x, t, model_output)
-        else:
-            e_t = model_output
-
-        if score_corrector is not None:
-            assert self.model.parameterization == "eps", 'not implemented'
-            e_t = score_corrector.modify_score(self.model, e_t, x, t, c, **corrector_kwargs)
-
-        alphas = self.model.alphas_cumprod if use_original_steps else self.ddim_alphas
-        alphas_prev = self.model.alphas_cumprod_prev if use_original_steps else self.ddim_alphas_prev
-        sqrt_one_minus_alphas = self.model.sqrt_one_minus_alphas_cumprod if use_original_steps else self.ddim_sqrt_one_minus_alphas
-        sigmas = self.model.ddim_sigmas_for_original_num_steps if use_original_steps else self.ddim_sigmas
-        # select parameters corresponding to the currently considered timestep
-        a_t = torch.full((b, 1, 1, 1), alphas[index], device=device)
-        a_prev = torch.full((b, 1, 1, 1), alphas_prev[index], device=device)
-        sigma_t = torch.full((b, 1, 1, 1), sigmas[index], device=device)
-        sqrt_one_minus_at = torch.full((b, 1, 1, 1), sqrt_one_minus_alphas[index],device=device)
-
-        # current prediction for x_0
-        if self.model.parameterization != "v":
-            pred_x0 = (x - sqrt_one_minus_at * e_t) / a_t.sqrt()
-        else:
-            pred_x0 = self.model.predict_start_from_z_and_v(x, t, model_output)
-
-        if quantize_denoised:
-            pred_x0, _, *_ = self.model.first_stage_model.quantize(pred_x0)
-
-        if dynamic_threshold is not None:
-            raise NotImplementedError()
-
-        # direction pointing to x_t
-        dir_xt = (1. - a_prev - sigma_t**2).sqrt() * e_t
-        noise = sigma_t * noise_like(x.shape, device, repeat_noise) * temperature
-        if noise_dropout > 0.:
-            noise = torch.nn.functional.dropout(noise, p=noise_dropout)
-        x_prev = a_prev.sqrt() * pred_x0 + dir_xt + noise
-        #x_prev = (a_prev.sqrt() * pred_x0 + dir_xt + noise) * 0.99 + pred_x0 * 0.01
-        #print("--")
-        if type(imgUser01) != type(None):
-          #print("p_sample_ddim imgUser01 okkkkkkkkkkkkkkk index=",index)
-          #print(len(imgUser01))
-          #print(" x_prev shape",x_prev.shape)
-          #print(" imgUser01 shape",imgUser01.shape)
-          a1,a2,a3,a4=x_prev.shape
-          b1,b2,b3,b4=imgUser01.shape
-          imgUser01=imgUser01[0:a1,0:a2,0:a3,0:a4]
-          #if b4 is a4:
-          #  print("b4 a4 same")
-          if index > (20-9) :
-            #30 20 30-10 x_prev = (x_prev * 0.95) + (imgUser01 * 0.03)
-            #20 17 30-13 x_prev = (x_prev * 0.97) + (imgUser01 * 0.016)
-            #20 17 30-13 x_prev = (x_prev * 0.955) + (imgUser01 * 0.025)
-            #20 07 20-13 x_prev = (x_prev * 0.96) + (imgUser01 * 0.015)
-            #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.017)
-            #20 07 20-13 x_prev = (x_prev * 0.95) + (imgUser01 * 0.021)
-            #x_prev = (x_prev * 0.5) + (imgUser01 * a_prev.sqrt() *0.5)
-            #x_prev = a_prev.sqrt() * pred_x0 + ((dir_xt+imgUser01)*0.5) + noise
-            x_prev = a_prev.sqrt() * (pred_x0*0.94 +(imgUser01*0.03)) + dir_xt + noise
-            x_prev = (x_prev * 0.99) + (imgUser01 * 0.01)
-
-            
-        #else:
-        #  print("p_sample_ddim none imgUser01 is False")
-        #print("b=",b)
-        #print("len x_prev ",len(x_prev))
-        #print(" x_prev shape",x_prev.shape)
-        #print(" x_prev size",x_prev.size)
-        #print("dir_xt shape",dir_xt.shape)
-        #print("a_prev shape",a_prev.shape)
-        #print("--")
-        #print("a_prev.sqrt()",a_prev.sqrt())
-        #print("--")
-        #print("e_t shape",e_t.shape)
-        #print("model_t shape",model_t.shape)
-        #print("model_output shape",model_output.shape)
-        #print("model_uncond shape",model_uncond.shape)
+def addWeightDict(state_dict,text_encoder,unet):
+  alpha = 0.75
+  visited = []
+  alpha = 0.1
+  # directly update weight in diffusers model
+  for key in state_dict:
+    #print("key ",key)
+    # it is suggested to print out the key, it usually will be something like below
+    # "lora_te_text_model_encoder_layers_0_self_attn_k_proj.lora_down.weight"
+    if '.alpha' in key:
+      #alpha = state_dict[key]
+      #alpha /= 256 #/ 0.5 * 0.75 384
+      #print("k",state_dict[key])
+      print("a",alpha)
+    # as we have set the alpha beforehand, so just skip
+    if '.alpha' in key or key in visited:
+        continue
         
-        #model_output2 = self.model.predict_start_from_z_and_v(x, t, model_uncond)
-        #model_t2 = self.model.predict_start_from_z_and_v(x, t, model_t)
-        
-
-        return x_prev, pred_x0 , model_output , model_t
-
-    @torch.no_grad()
-    def encode(self, x0, c, t_enc, use_original_steps=False, return_intermediates=None,
-               unconditional_guidance_scale=1.0, unconditional_conditioning=None, callback=None):
-        num_reference_steps = self.ddpm_num_timesteps if use_original_steps else self.ddim_timesteps.shape[0]
-
-        assert t_enc <= num_reference_steps
-        num_steps = t_enc
-
-        if use_original_steps:
-            alphas_next = self.alphas_cumprod[:num_steps]
-            alphas = self.alphas_cumprod_prev[:num_steps]
-        else:
-            alphas_next = self.ddim_alphas[:num_steps]
-            alphas = torch.tensor(self.ddim_alphas_prev[:num_steps])
-
-        x_next = x0
-        intermediates = []
-        inter_steps = []
-        for i in tqdm(range(num_steps), desc='Encoding Image'):
-            t = torch.full((x0.shape[0],), i, device=self.model.device, dtype=torch.long)
-            if unconditional_guidance_scale == 1.:
-                noise_pred = self.model.apply_model(x_next, t, c)
+    if 'text' in key:
+        layer_infos = key.split('.')[0].split(LORA_PREFIX_TEXT_ENCODER+'_')[-1].split('_')
+        curr_layer = text_encoder#pipeline.text_encoder
+    else:
+        layer_infos = key.split('.')[0].split(LORA_PREFIX_UNET+'_')[-1].split('_')
+        curr_layer = unet#pipeline.unet
+    #print("layer_infos ",layer_infos)
+    
+    # find the target layer
+    temp_name = layer_infos.pop(0)
+    while len(layer_infos) > -1:
+        try:
+            #print("aaaa ",temp_name)
+            curr_layer = curr_layer.__getattr__(temp_name)
+            if len(layer_infos) > 0:
+                temp_name = layer_infos.pop(0)
+            elif len(layer_infos) == 0:
+                break
+        except Exception:
+            if len(temp_name) > 0:
+                temp_name += '_'+layer_infos.pop(0)
             else:
-                assert unconditional_conditioning is not None
-                e_t_uncond, noise_pred = torch.chunk(
-                    self.model.apply_model(torch.cat((x_next, x_next)), torch.cat((t, t)),
-                                           torch.cat((unconditional_conditioning, c))), 2)
-                noise_pred = e_t_uncond + unconditional_guidance_scale * (noise_pred - e_t_uncond)
+                temp_name = layer_infos.pop(0)
+    
+    # org_forward(x) + lora_up(lora_down(x)) * multiplier
+    pair_keys = []
+    if 'lora_down' in key:
+        pair_keys.append(key.replace('lora_down', 'lora_up'))
+        pair_keys.append(key)
+    else:
+        pair_keys.append(key)
+        pair_keys.append(key.replace('lora_up', 'lora_down'))
+    #print(pair_keys)
+    #print(state_dict[key].shape)
+    # update weight
+    if len(state_dict[pair_keys[0]].shape) == 4:
+        weight_up = state_dict[pair_keys[0]].squeeze(3).squeeze(2).to(torch.float32)
+        weight_down = state_dict[pair_keys[1]].squeeze(3).squeeze(2).to(torch.float32)
+        curr_layer.weight.data += alpha * torch.mm(weight_up, weight_down).unsqueeze(2).unsqueeze(3)#.to("cuda")
+    else:
+        weight_up = state_dict[pair_keys[0]].to(torch.float32)
+        weight_down = state_dict[pair_keys[1]].to(torch.float32)
+        hh_1=torch.mm(weight_up, weight_down)
+        #print(hh_1)
+        #print(alpha)
+        hh_1 *=alpha
+        #print(hh_1.dtype,curr_layer.weight.data.dtype)
+        #hh_1=hh_1.to("cuda")
+        #print(hh_1.is_cuda,curr_layer.weight.data.is_cuda)
+        curr_layer.weight.data += hh_1#.to("cuda")
+        
+     # update visited list
+    for item in pair_keys:
+        visited.append(item)
+  return
+  
+"""  
 
-            xt_weighted = (alphas_next[i] / alphas[i]).sqrt() * x_next
-            weighted_noise_pred = alphas_next[i].sqrt() * (
-                    (1 / alphas_next[i] - 1).sqrt() - (1 / alphas[i] - 1).sqrt()) * noise_pred
-            x_next = xt_weighted + weighted_noise_pred
-            if return_intermediates and i % (
-                    num_steps // return_intermediates) == 0 and i < num_steps - 1:
-                intermediates.append(x_next)
-                inter_steps.append(i)
-            elif return_intermediates and i >= num_steps - 2:
-                intermediates.append(x_next)
-                inter_steps.append(i)
-            if callback: callback(i)
+pipeline = pipeline.to(torch.float16).to("cuda")
+pipeline.safety_checker = lambda images, clip_input: (images, False)
 
-        out = {'x_encoded': x_next, 'intermediate_steps': inter_steps}
-        if return_intermediates:
-            out.update({'intermediates': intermediates})
-        return x_next, out
+prompt = '1boy, wanostyle, monkey d luffy, smiling, straw hat, looking at viewer, solo, upper body, ((masterpiece)), (best quality), (extremely detailed), depth of field, sketch, dark intense shadows, sharp focus, soft lighting, hdr, colorful, good composition, fire all around, spectacular, <lora:wanostyle_2_offset:1>, closed shirt, anime screencap, scar under eye, ready to fight, black eyes'
+negative_prompt = '(painting by bad-artist-anime:0.9), (painting by bad-artist:0.9), watermark, text, error, blurry, jpeg artifacts, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, artist name, (worst quality, low quality:1.4), bad anatomy, watermark, signature, text, logo'
 
-    @torch.no_grad()
-    def stochastic_encode(self, x0, t, use_original_steps=False, noise=None):
-        # fast, but does not allow for exact reconstruction
-        # t serves as an index to gather the correct alphas
-        if use_original_steps:
-            sqrt_alphas_cumprod = self.sqrt_alphas_cumprod
-            sqrt_one_minus_alphas_cumprod = self.sqrt_one_minus_alphas_cumprod
-        else:
-            sqrt_alphas_cumprod = torch.sqrt(self.ddim_alphas)
-            sqrt_one_minus_alphas_cumprod = self.ddim_sqrt_one_minus_alphas
+prompt = ' best quality, ultra high res, (photorealistic:1.4), 1woman, sleeveless white button shirt, black skirt, black choker, ((glasses)), (Kpop idol), (aegyo sal:1), (platinum blonde grey hair:1), ((puffy eyes)), looking at viewer, full body, <lora:wlop:0.5>'
+negative_prompt = 'paintings, sketches, (worst quality:2), (low quality:2), (normal quality:2), lowres, normal quality, ((monochrome)), ((grayscale)), skin spots, acnes, skin blemishes, age spot, glans, nsfw, nipples'
 
-        if noise is None:
-            noise = torch.randn_like(x0)
-        return (extract_into_tensor(sqrt_alphas_cumprod, t, x0.shape) * x0 +
-                extract_into_tensor(sqrt_one_minus_alphas_cumprod, t, x0.shape) * noise)
+generator = torch.Generator("cuda").manual_seed(2356485121)
 
-    @torch.no_grad()
-    def decode(self, x_latent, cond, t_start, unconditional_guidance_scale=1.0, unconditional_conditioning=None,
-               use_original_steps=False, callback=None):
+with torch.no_grad():
+    image = pipeline(prompt=prompt,
+                     negative_prompt=negative_prompt,
+                     height=512, 
+                     width=512,
+                     num_inference_steps=28,
+                     guidance_scale=8,
+                     generator=generator).images[0]
+#image = pipe("girl,dress,djlksjdvoijsdoiisdf", generator=generator).images[0]                                                                                                                                                                                           
 
-        timesteps = np.arange(self.ddpm_num_timesteps) if use_original_steps else self.ddim_timesteps
-        timesteps = timesteps[:t_start]
 
-        time_range = np.flip(timesteps)
-        total_steps = timesteps.shape[0]
-        print(f"Running DDIM Sampling with {total_steps} timesteps")
-
-        iterator = tqdm(time_range, desc='Decoding image', total=total_steps)
-        x_dec = x_latent
-        for i, step in enumerate(iterator):
-            index = total_steps - i - 1
-            ts = torch.full((x_latent.shape[0],), step, device=x_latent.device, dtype=torch.long)
-            x_dec, _ = self.p_sample_ddim(x_dec, cond, ts, index=index, use_original_steps=use_original_steps,
-                                          unconditional_guidance_scale=unconditional_guidance_scale,
-                                          unconditional_conditioning=unconditional_conditioning)
-            if callback: callback(i)
-        return x_dec
+image.save("aa01.png".format(prompt[:5],alpha))
+"""
