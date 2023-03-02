@@ -155,6 +155,22 @@ global m_dir
 global m_num
 m_dir="/content/drive/MyDrive/aipic0ad/"
 m_num=0
+
+def image_grid(imgs, rows=1, cols=2): 
+    global m_num
+    m_num += 1                                                                                                                                                                                                        
+    w, h = imgs[0].size                                                                                                                                                                                                                       
+    grid = Image.new('RGB', size=(cols*w, rows*h))                                                                                                                                                                                            
+                                                                                                                                                                                                                                              
+    for i, img in enumerate(imgs):                                                                                                                                                                                                            
+        grid.paste(img, box=(i%cols*w, i//cols*h))  
+    fn=m_dir+"zzz000__"+str(m_num)+"__"+randStr()+".jpg"
+    print(fn)
+    grid.save(fn,"jpeg")                                                                                                                                                                                          
+    return grid     
+
+
+
 def randStr():
   arrS1=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"]
   arrS1.extend(["q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6"])
@@ -180,15 +196,15 @@ def iproc(img,pt01,nnpt01):
                    seed=-1,
                    eta=0.0,
                    temp=1.0,imgUser01=None)
-      ###
-      rett=model.process_hed(input_image=img,
+      """
+      rett=model.process_seg(input_image=img,
                    prompt=pt01,
                    a_prompt="",
                    n_prompt=nnpt01,
                    num_samples=1,
-                   ddim_steps=20,
-                   image_resolution=768,
-                   detect_resolution=768,
+                   ddim_steps=30,
+                   image_resolution=512,
+                   detect_resolution=512,
                    scale=8,
                    seed=-1,
                    eta=0.0)
@@ -206,28 +222,66 @@ def iproc(img,pt01,nnpt01):
                    eta=0.0,
                    low_threshold=100,
                    high_threshold=200)
-      #"""
+      """
       return rett
     
+def makeKeyword():
+    #bloom, god rays, hard shadows, studio lighting, soft lighting, diffused lighting, rim lighting, volumetric lighting, specular lighting, cinematic lighting, luminescence, translucency, subsurface scattering, global illumination, indirect light, radiant light rays, bioluminescent details, ektachrome, glowing, shimmering light, halo, iridescent, backlighting, caustics
+    key01=["professional lighting","cinematic lighting","bloom","god rays","soft lighting"]
+    key02=["seductive look","[[[smiling]]]","smile","angry","sad"]
+    key03=["kodak portra 400","Olympus","sony","Canon","nikon","samsung"]
+    key04=["35mm lens","8mm lens","100mm macro lens","leica SL lens","8mm film grain"]
+    key05=["toned body","sexy body","healthy body"]
+    key06=["Award-winning photograph","professional photograph"]
+    key07=["HDR","4K resolution","8k resolution"]
+    key08=["ass focus","art style","pinup"]
+    key09=["strawberry hair","beach hair","blonde hair","straight hair","a bob hair","updo hair","ponytail hair","buzz cut hair","a bowl cut hair"]
+    key10=["red","blue","green","white","gray","purple","orange","gold","brown","sky"]
+    key11=["indian","african"]#"Caucasian","asian","hispanic","korean"]
+    key12=["white dress"]#["wearing (police uniform, police hat, short skirt, thighhighs:1.1)","wearing daisy dukes","wearing dress","wearing (cowboy hat,blouse,jeans)","wearing (sexy hat,blouse,long skirt)","wearing (T-shirt,mini skirt)"]
+    pt01 = "dancing,out of focus trees in background,sfw,(detailed skin),(detailed face),(detailed eyes),"
+    pt01 += "soft lighting"+","
+    
+    #pt01 += random.choice(key01)+","
+    pt01 += random.choice(key02)+","
+    pt01 += random.choice(key03)+","
+    pt01 += random.choice(key04)+","
+    pt01 += random.choice(key05)+","
+    pt01 += random.choice(key06)+","
+    pt01 += random.choice(key07)+","
+    pt01 += random.choice(key08)+","
+    pt01 += random.choice(key10)+" "+random.choice(key09)+","
+    #pt01+= random.choice(key10)+","
+    pt01 += random.choice(key11)+","
+    pt01 += random.choice(key12)
+    pt01 += ","+randStr()
+    return pt01
 
 def func001():
   global m_num
   img=np.asanyarray(m_imArr[0])
   #
   while True:
-    m_num += 1
+    #
     pt01="<lora:slavekiniv1.5:1><lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,girl,asdfasdfer sd04"
     pt01="<lora:slavekiniv1.5:1>manasdfasdfer sd05"
     pt01=randStr()+",<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,red slavekini,detailed slavekini,1girl, zelda \(the_legend_of_zelda\) wearing a slavekini, long hair, solo, crouching, best quality, masterpiece, highly detailed, intricate details, detailed face, detailed eyes, <lora:slavekiniv1.5:1>"
     nnpt01="(monochrome:1.3), (oversaturated:1.3), bad hands, lowers, 3d render, cartoon, long body, wide hips, narrow waist, disfigured, ugly, cross eyed, squinting, grain, Deformed, blurry, bad anatomy, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, disgusting, poorly drawn, mutilated, , mangled, old, surreal, ((text))"
     pt01=randStr()+",<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,red slavekini,detailed slavekini,<lora:slavekiniv1.5:1>"
     pt01=randStr()+",1girl,masterclass,best quality, black_dress, blue_bowtie, halo, karin_(blue_archive), looking_at_viewer, maid,white_gloves, maid_headdress, puffy_short_sleeves, solo,white_apron, white_pantyhose,maid_apron, pleated_dress, frilled_dress, <lora:Karin8V3_e6:1>,very long hair,sitting, outdoors,dark_skin"
-    rett=iproc(img,pt01,nnpt01)
-    fn="zzv____"+str(m_num)+".jpg"
-    print(fn)
-    #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
-    Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
-
+    pt01="<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,<lora:Karin8V3_e6:1>,maid"
+    pt01=makeKeyword()
+    for i in range(len(m_imArr)):
+      img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
+      m_num += 1
+      rett=iproc(img,pt01,nnpt01)
+      fn="zzr_00____"+str(m_num)+".jpg"
+      fn2="zzr_01____"+str(m_num)+".jpg"
+      print(fn)
+      #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
+      Image.fromarray(rett[0]).save(m_dir+fn2,"jpeg")
+      Image.fromarray(rett[1]).save(m_dir+fn,"jpeg")
+      
 func001()
 
 """
