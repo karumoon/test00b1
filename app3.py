@@ -131,6 +131,14 @@ m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
 m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
 
 
+m_imArr[0]=Image.open("./pp/aa01_frames/ezgif-frame-001.jpg")
+m_imArr[1]=Image.open("./pp/aa01_frames/ezgif-frame-011.jpg")
+m_imArr[2]=Image.open("./pp/aa01_frames/ezgif-frame-021.jpg")
+m_imArr[3]=Image.open("./pp/aa01_frames/ezgif-frame-031.jpg")
+m_imArr[4]=Image.open("./pp/aa01_frames/ezgif-frame-041.jpg")
+m_imArr[5]=Image.open("./pp/aa01_frames/ezgif-frame-051.jpg")
+
+
 
 #torch.load(vae_pt_path, weights_only=False)
 
