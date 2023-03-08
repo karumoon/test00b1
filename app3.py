@@ -131,6 +131,18 @@ m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
 m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
 
 
+
+#torch.load(vae_pt_path, weights_only=False)
+
+def testaa01():
+  dat=torch.load("/content/muu/EmWat69.pt", weights_only=False)
+  for key in dat:
+    print(key)
+  return
+
+testaa01()
+
+
 print( "len len m_im ",len(m_imArr))
 #m_imArr[14]=Image.open("./pp/openpose_sample (11).png")
 
