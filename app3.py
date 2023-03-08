@@ -131,21 +131,57 @@ m_imArr[4]=Image.open("./pp/pose-playful-010-ar2x3.png")
 m_imArr[5]=Image.open("./pp/pose-playful-012-ar2x3.png")
 
 
-m_imArr[0]=Image.open("./pp/aa01_frames/ezgif-frame-001.jpg")
-m_imArr[1]=Image.open("./pp/aa01_frames/ezgif-frame-011.jpg")
-m_imArr[2]=Image.open("./pp/aa01_frames/ezgif-frame-021.jpg")
-m_imArr[3]=Image.open("./pp/aa01_frames/ezgif-frame-031.jpg")
-m_imArr[4]=Image.open("./pp/aa01_frames/ezgif-frame-041.jpg")
-m_imArr[5]=Image.open("./pp/aa01_frames/ezgif-frame-051.jpg")
+
+m_imArr[0]=Image.open("./pp/aa01_frames/ezgif-frame-019.jpg")
+m_imArr[1]=Image.open("./pp/aa01_frames/ezgif-frame-022.jpg")
+m_imArr[2]=Image.open("./pp/aa01_frames/ezgif-frame-025.jpg")
+m_imArr[3]=Image.open("./pp/aa01_frames/ezgif-frame-028.jpg")
+m_imArr[4]=Image.open("./pp/aa01_frames/ezgif-frame-031.jpg")
+m_imArr[5]=Image.open("./pp/aa01_frames/ezgif-frame-034.jpg")
+m_imArr[6]=Image.open("./pp/aa01_frames/ezgif-frame-037.jpg")
+m_imArr[7]=Image.open("./pp/aa01_frames/ezgif-frame-040.jpg")
+m_imArr[8]=Image.open("./pp/aa01_frames/ezgif-frame-043.jpg")
+
+m_imArr[9]=Image.open("./pp/aa01_frames/ezgif-frame-045.jpg")
+m_imArr[10]=Image.open("./pp/aa01_frames/ezgif-frame-047.jpg")
+m_imArr[11]=Image.open("./pp/aa01_frames/ezgif-frame-049.jpg")
+m_imArr[12]=Image.open("./pp/aa01_frames/ezgif-frame-051.jpg")
+m_imArr[13]=Image.open("./pp/aa01_frames/ezgif-frame-053.jpg")
+m_imArr[14]=Image.open("./pp/aa01_frames/ezgif-frame-055.jpg")
+m_imArr[15]=Image.open("./pp/aa01_frames/ezgif-frame-057.jpg")
+m_imArr[16]=Image.open("./pp/aa01_frames/ezgif-frame-059.jpg")
+m_imArr[17]=Image.open("./pp/aa01_frames/ezgif-frame-061.jpg")
+m_imArr[18]=Image.open("./pp/aa01_frames/ezgif-frame-063.jpg")
+m_imArr[19]=Image.open("./pp/aa01_frames/ezgif-frame-065.jpg")
+m_imArr[20]=Image.open("./pp/aa01_frames/ezgif-frame-067.jpg")
+m_imArr[21]=Image.open("./pp/aa01_frames/ezgif-frame-069.jpg")
+m_imArr[22]=Image.open("./pp/aa01_frames/ezgif-frame-071.jpg")
+m_imArr[23]=Image.open("./pp/aa01_frames/ezgif-frame-073.jpg")
+m_imArr[24]=Image.open("./pp/aa01_frames/ezgif-frame-075.jpg")
+m_imArr[25]=Image.open("./pp/aa01_frames/ezgif-frame-077.jpg")
+m_imArr[26]=Image.open("./pp/aa01_frames/ezgif-frame-079.jpg")
+m_imArr[27]=Image.open("./pp/aa01_frames/ezgif-frame-081.jpg")
+m_imArr[28]=Image.open("./pp/aa01_frames/ezgif-frame-083.jpg")
+m_imArr[29]=Image.open("./pp/aa01_frames/ezgif-frame-085.jpg")
+m_imArr[30]=Image.open("./pp/aa01_frames/ezgif-frame-087.jpg")
+m_imArr[29]=Image.open("./pp/aa01_frames/ezgif-frame-089.jpg")
+m_imArr[30]=Image.open("./pp/aa01_frames/ezgif-frame-091.jpg")
 
 
 
 #torch.load(vae_pt_path, weights_only=False)
-
+#sd_checkpoint_name sd_checkpoint string_to_token
 def testaa01():
   dat=torch.load("/content/muu/EmWat69.pt", weights_only=False)
   for key in dat:
-    print(key)
+    print("kkkkk ",key)
+    try:
+      for key2 in dat[key]:
+        print("k2k2k2 ",key2)
+    except Exception as ex: # 에러 종류
+      print('에러가 발생 했습니다', ex) # ex는 발생한 에러의 이름을 받아오는 변수
+  print(dat)
+  print(dat['string_to_param']['*'].shape)
   return
 
 testaa01()
@@ -220,7 +256,7 @@ import random
 
 global m_dir
 global m_num
-m_dir="/content/drive/MyDrive/aipic0ah/"
+m_dir="/content/drive/MyDrive/aipic0ai/"
 m_num=0
 
 def image_grid(imgs, rows=1, cols=2): 
@@ -318,7 +354,7 @@ def makeKeyword():
     #pt01 = "<lora:Karin8V3_e6:1>,anime,3 head body type,"#<lora:hiqcg_body_768_epoch-000005:0.5>, hiqcgbody,hiqcgface,very_long_hair,"
     #pt01 += "simple gray background,strong simple background, apron, black_dress, black_footwear, blue_bow, bow, bowtie, closed_mouth, dress, expressions, frilled_apron, frills, full_body, gloves, hair_between_eyes, halo, handle, high_heels, holding, karin_(blue_archive), looking_at_viewer, maid, maid_apron, maid_headdress, mx2j, official_art, pantyhose, puffy_short_sleeves, puffy_sleeves, ribbon, shoes, short_sleeves, solo, standing, transparent_background, waist_apron, white_apron, white_gloves, white_pantyhose, pleated_dress, blue_ribbon, blue_bowtie, frilled_dress, very_long_hair,"
     
-    pt01 = "1girl,masterclass,best quality,"
+    pt01 = "(1girl,masterclass,best quality,simple background),"
     #out of focus trees in background
     pt01 += "sfw,(detailed skin),(detailed face),(detailed eyes),"
     pt01 += "soft lighting"+","
@@ -364,8 +400,8 @@ def func001():
       img=np.asanyarray(m_imArr[ m_num % len(m_imArr) ])
       m_num += 1
       rett=iproc(img,pt01,nnpt01,seed=m_seedNum,rett=rett,detectPass = detectPass)
-      fn="zxw_00____"+str(m_num)+".jpg"
-      fn2="zxw_01____"+str(m_num)+".jpg"
+      fn="zzzw_00____"+str(m_num)+".jpg"
+      fn2="zzzw_01____"+str(m_num)+".jpg"
       print(fn)
       #print("rett ",rett)
       #Image.fromarray(rett['r0'][1]).save(m_dir+fn,"jpeg")
